@@ -1,0 +1,9 @@
+{
+  "help": {
+    "name": "help"
+  },
+  "deploy": {
+    "name": "deploy",
+    "description": "Deploy commands globally or in a guild/server"
+  }
+}

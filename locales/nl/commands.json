@@ -1,0 +1,9 @@
+{
+  "help": {
+    "name": "help"
+  },
+  "deploy": {
+    "name": "commands-registreren",
+    "description": "Registreer commands globaal of per guild/server"
+  }
+}

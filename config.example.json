@@ -1,0 +1,70 @@
+{
+  "$schema": "./config.schema.json",
+  "client": {
+    "id": "835856785512464436",
+    "token": "YOUR_BOT_TOKEN",
+    "refuse_unknown_command_interactions": true,
+    "development_server_id": "FOR_DEVELOPERS_ONLY"
+  },
+  "permissions": {
+    "owner_id": "1148597817498140774",
+    "developer_ids": [
+      "1148597817498140774"
+    ],
+    "system_administrator_ids": [
+      "1148597817498140774"
+    ]
+  },
+  "api": {
+    "enabled": true,
+    "port": 9000
+  },
+  "cooldown": {
+    "default_cooldown_enabled": true,
+    "default_cooldown_type": "User",
+    "default_cooldown_usages": 2,
+    "default_cooldown_duration": 15,
+    "default_cooldown_persistent": false
+  },
+  "cluster": {
+    "enabled": false,
+    "total_shards": 2,
+    "shards_per_clusters": 1,
+    "total_clusters": 2,
+    "mode": "process",
+    "respawn": true,
+    "restarts": {
+      "max": 1,
+      "interval": 5000
+    }
+  },
+  "colors": {
+    "primary": "#91DDF2",
+    "secondary": "#99aab5",
+    "success": "#57F287",
+    "error": "#dd2e44",
+    "info": "#3b88c3",
+    "warning": "#ffcc4d",
+    "debug": "#9266cc",
+    "waiting": "#f7b977"
+  },
+  "emojis": {
+    "success": "✅",
+    "error": "❌",
+    "info": ":information_source:",
+    "warning": "⚠️",
+    "debug": "🐛",
+    "waiting": "⏳",
+    "separator": "•"
+  },
+  "debug": {
+    "debug_mode_enabled": true,
+    "chat_input_command_api_data": true,
+    "interactions": true,
+    "autocomplete_execution_time": true,
+    "modal_submit_execution_time": true,
+    "command_throttling": true,
+    "localizations": false,
+    "command_data": true
+  }
+}

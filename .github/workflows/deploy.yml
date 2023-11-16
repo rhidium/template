@@ -1,0 +1,83 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Release]
+    types:
+      - completed
+
+jobs:
+  notify-start:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord Webhook - Notify Start Deploy
+        uses: tsickert/discord-webhook@v5.3.0
+        continue-on-error: true
+        with:
+          username: "Mirasaki Development CI/CD"
+          avatar-url: "https://mirasaki.dev/logo.png"
+          webhook-url: ${{ secrets.DEPLOYMENT_WEBHOOK_URL }}
+          embed-author-name: "Continuous Deployment by Mirasaki Development"
+          embed-author-url: "https://mirasaki.dev"
+          embed-author-icon-url: "https://mirasaki.dev/logo.png"
+          embed-color: 14228765
+          embed-title: "⬇️ Rhidium Template"
+          embed-description: "⌛ Deploying **`@${{ github.repository }}`**...\n📤 Service is now temporarily unavailable."
+
+  deploy:
+    needs: notify-start
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Copy repository contents via scp
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "."
+          target: "/var/www/@rhidium/template"
+
+      - name: Deploy to Production
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+
+            cd /var/www/@rhidium/template
+            pm2 stop ecosystem.config.js
+
+            npm install
+            npm run build
+
+            cd /var/www/@rhidium/template
+            pm2 restart ecosystem.config.js
+
+  notify-finish:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Discord Webhook - Notify Finish Deploy
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          username: "Mirasaki Development CI/CD"
+          avatar-url: "https://mirasaki.dev/logo.png"
+          webhook-url: ${{ secrets.DEPLOYMENT_WEBHOOK_URL }}
+          filename: "CHANGELOG.md"
+          embed-author-name: "Continuous Deployment by Mirasaki Development"
+          embed-author-url: "https://mirasaki.dev"
+          embed-author-icon-url: "https://mirasaki.dev/logo.png"
+          embed-color: 9559538
+          embed-title: "⬆️ Rhidium Template"
+          embed-description: "✅ Finished deploying **`@${{ github.repository }}`**\n📥 <@1174745346719625216> is back online ([docs](<https://rhidium.xyz>))"

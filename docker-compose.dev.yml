@@ -1,0 +1,41 @@
+version: '3.1'
+
+services:
+  client:
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nodejs
+    container_name: client
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./:/app
+      - node_modules:/app/node_modules
+    networks:
+      - app-network
+
+  db:
+    image: mongo:latest
+    container_name: db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:     
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:

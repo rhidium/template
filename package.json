@@ -1,0 +1,91 @@
+{
+	"name": "@rhidium/template",
+	"version": "0.0.1",
+	"description": "A TypeScript Discord bot template that fully utilizes the Rhidium framework.",
+	"main": "dist/src/index.js",
+	"license": "ISC",
+	"author": {
+		"name": "Mirasaki (Richard Hillebrand)",
+		"email": "me@mirasaki.dev",
+		"url": "https://mirasaki.dev"
+	},
+	"scripts": {
+		"setup:linux": "npm install && cp .env.example .env && cp config.example.json config.json",
+		"setup:windows": "npm install && copy .env.example .env && copy config.example.json config.json",
+		"generate-schema": "npx ts-json-schema-generator --path 'src/config/*.ts' --type 'UserConfigOptions' --tsconfig tsconfig.json",
+		"update-schema": "node scripts/create-config-schema.mjs",
+		"preconfig-editor": "npm run update-schema",
+		"config-editor": "node scripts/config-editor.mjs",
+		"setup:config": "npm i @rhidium/json-editor && npm run config-editor",
+		"clean:dist": "rimraf ./dist",
+		"clean:modules": "rimraf ./node_modules",
+		"clean": "npm run clean:dist && npm run clean:modules",
+		"prebuild": "npm run clean:dist",
+		"build": "tsc",
+		"build:watch": "tsc -w",
+		"dev": "npm run start:dev",
+		"prestart": "npm run build",
+		"start": "node --enable-source-maps dist/src/index.js --NODE_ENV=production",
+		"start:dev": "ts-node-dev --respawn --notify --transpile-only src/index.ts --NODE_ENV=development",
+		"pretest": "npm run build",
+		"test": "mocha dist/test/**/*.js",
+		"test:dev": "ts-mocha test/**/*.spec.ts -w --watch-files '**/*.ts'",
+		"lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'",
+		"lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
+		"pm2:start": "pm2 start",
+		"pm2:stop": "pm2 stop",
+		"pm2:restart": "pm2 stop",
+		"pm2:reset": "pm2 reset",
+		"pm2:purge": "npm run pm2:stop && npm run pm2:reset && npm run pm2:delete",
+		"pm2:delete": "pm2 delete",
+		"docker:build": "docker build --tag rhidium-template .",
+		"docker:start": "docker run -it -p 3000:3000 --env-file ./.env -d --name my-discord-bot rhidium-template",
+		"docker:stop": "docker stop my-discord-bot",
+		"docker:restart": "docker restart my-discord-bot",
+		"docker:kill": "docker rm -f my-discord-bot",
+		"docker:purge": "docker rm -fv my-discord-bot",
+		"docker:shell": "docker run -it --rm my-discord-bot sh",
+		"docker:logs": "docker logs my-discord-bot -f",
+		"commit": "cz",
+		"prepare": "husky install"
+	},
+	"dependencies": {
+		"@prisma/client": "^5.4.1",
+		"@rhidium/core": "^1.0.0",
+		"common-tags": "^1.8.2",
+		"discord-api-types": "^0.37.63",
+		"discord-hybrid-sharding": "^2.1.4",
+		"discord.js": "^14.14.1",
+		"i18next": "23.6.0",
+		"module-alias": "^2.2.3"
+	},
+	"devDependencies": {
+		"@commitlint/cli": "^17.7.1",
+		"@commitlint/config-conventional": "^17.7.0",
+		"@types/common-tags": "^1.8.1",
+		"@types/express": "^4.17.18",
+		"@types/module-alias": "^2.0.2",
+		"@types/node": "^18.18.3",
+		"@typescript-eslint/eslint-plugin": "^6.7.5",
+		"@typescript-eslint/parser": "^6.7.5",
+		"cz-conventional-changelog": "^3.3.0",
+		"eslint": "^8.51.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^14.0.1",
+		"prisma": "^5.4.1",
+		"rimraf": "^5.0.1",
+		"ts-json-schema-generator": "^1.4.0",
+		"ts-node-dev": "^2.0.0",
+		"typescript": "^5.2.2"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
+	},
+	"lint-staged": {
+		"src/**/*.{js,jsx,ts,tsx,json}": [
+			"eslint --fix"
+		]
+	}
+}
