@@ -107,7 +107,7 @@ interface Resources {
   };
 
   commands: {
-    commandsHelp: {
+    commands: {
       name: string;
       description: string;
       noCmdForQuery: string;
@@ -121,7 +121,7 @@ interface Resources {
       description: string;
       prompt: string;
     };
-    permLevel: {
+    'perm-level': {
       name: string;
       description: string;
       yourPermLevel: string;
@@ -138,10 +138,10 @@ interface Resources {
       noSupportServer: string;
       prompt: string;
     };
-    printEmbed: {
+    'print-embed': {
       noEmbeds: string;
     };
-    userInfo: {
+    'user-info': {
       noMember: string;
       memberNotBoosting: string;
     };
@@ -150,6 +150,7 @@ interface Resources {
       description: string;
       evaluated: string;
       noCodeInOriginMessage: string;
+      noCodeProvided: string;
       errorEncountered: string;
       codeErrored: string;
       evaluationSuccessful: string;
@@ -202,7 +203,7 @@ interface Resources {
       availablePlaceholders: string;
       placeholderDefinition: string;
     };
-    modLogChannel: {
+    'mod-log-channel': {
       name: string;
       description: string;
       title: string;
@@ -212,7 +213,7 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    modRole: {
+    'mod-role': {
       name: string;
       description: string;
       title: string;
@@ -222,7 +223,7 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    adminLogChannel: {
+    'admin-log-channel': {
       name: string;
       description: string;
       title: string;
@@ -231,7 +232,7 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    adminRole: {
+    'admin-role': {
       name: string;
       description: string;
       title: string;
@@ -241,7 +242,7 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    memberJoinChannel: {
+    'member-join-channel': {
       name: string;
       description: string;
       title: string;
@@ -251,7 +252,7 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    memberLeaveChannel: {
+    'member-leave-channel': {
       name: string;
       description: string;
       title: string;
@@ -261,12 +262,12 @@ interface Resources {
       changed: string;
       changedTitle: string;
     };
-    memberJoin: {
+    'member-join': {
       label: string;
       errorLabel: string;
       welcome: string;
     };
-    memberLeave: {
+    'member-leave': {
       label: string;
       errorLabel: string;
       goodbye: string;

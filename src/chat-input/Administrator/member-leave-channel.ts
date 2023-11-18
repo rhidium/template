@@ -47,13 +47,13 @@ const MemberLeaveChannelCommand = new ChatInputCommand({
       });
       MemberLeaveChannelCommand.reply(
         interaction,
-        client.embeds.success(Lang.t('commands:memberLeaveChannel.disabled')),
+        client.embeds.success(Lang.t('commands:member-leave-channel.disabled')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: Lang.t('commands:memberLeaveChannel.disabledTitle'),
-          description: Lang.t('commands:memberLeaveChannel.disabledBy', {
+          title: Lang.t('commands:member-leave-channel.disabledTitle'),
+          description: Lang.t('commands:member-leave-channel.disabledBy', {
             username: interaction.user.username,
           }),
         }),
@@ -66,7 +66,7 @@ const MemberLeaveChannelCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: Lang.t('commands:memberLeaveChannel.title'),
+            name: Lang.t('commands:member-leave-channel.title'),
             value: guildSettings.memberLeaveChannelId
               ? `<#${guildSettings.memberLeaveChannelId}>`
               : Lang.t('general:notSet'),
@@ -82,14 +82,14 @@ const MemberLeaveChannelCommand = new ChatInputCommand({
     });
     MemberLeaveChannelCommand.reply(
       interaction,
-      client.embeds.success(Lang.t('commands:memberLeaveChannel.changed', {
+      client.embeds.success(Lang.t('commands:member-leave-channel.changed', {
         channel: channel.toString(),
       })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: Lang.t('commands:memberLeaveChannel.changedTitle'),
+        title: Lang.t('commands:member-leave-channel.changedTitle'),
         fields: [{
           name: Lang.t('general:channel'),
           value: `<#${channel.id}>`,

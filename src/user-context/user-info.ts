@@ -19,7 +19,7 @@ const UserInfoCommand = new UserContextCommand({
     const target = await guild.members.fetch(targetUser.id);
     if (!target) {
       UserInfoCommand.reply(interaction, {
-        content: Lang.t('commands:userInfo.noMember'),
+        content: Lang.t('commands:user-info.noMember'),
         ephemeral: true,
       });
       return;
@@ -42,7 +42,7 @@ const UserInfoCommand = new UserContextCommand({
       : none;
     const boostingOutput = target.premiumSinceTimestamp !== null
       ? TimeUtils.discordInfoTimestamp(target.premiumSinceTimestamp)
-      : Lang.t('commands:userInfo.memberNotBoosting');
+      : Lang.t('commands:user-info.memberNotBoosting');
 
     const embed = client.embeds.branding({
       description: roleOutput,

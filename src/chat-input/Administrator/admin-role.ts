@@ -46,13 +46,13 @@ const AdministratorRoleCommand = new ChatInputCommand({
       });
       AdministratorRoleCommand.reply(
         interaction,
-        client.embeds.success(Lang.t('commands:adminRole.removed')),
+        client.embeds.success(Lang.t('commands:admin-role.removed')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: Lang.t('commands:adminRole.removedTitle'),
-          description: Lang.t('commands:adminRole.removedBy', {
+          title: Lang.t('commands:admin-role.removedTitle'),
+          description: Lang.t('commands:admin-role.removedBy', {
             username: interaction.user.username,
           }),
         }),
@@ -65,7 +65,7 @@ const AdministratorRoleCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: Lang.t('commands:adminRole.title'),
+            name: Lang.t('commands:admin-role.title'),
             value: guildSettings.adminRoleId
               ? `<@&${guildSettings.adminRoleId}>`
               : Lang.t('general:notSet'),
@@ -81,14 +81,14 @@ const AdministratorRoleCommand = new ChatInputCommand({
     });
     AdministratorRoleCommand.reply(
       interaction,
-      client.embeds.success(Lang.t('commands:adminRole.changed', {
+      client.embeds.success(Lang.t('commands:admin-role.changed', {
         role: `<@&${role.id}>`,
       })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: Lang.t('commands:adminRole.changedTitle'),
+        title: Lang.t('commands:admin-role.changedTitle'),
         fields: [{
           name: Lang.t('general:role'),
           value: `<@&${role.id}>`,

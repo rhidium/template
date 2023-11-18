@@ -26,12 +26,12 @@ const PermLevelCommand = new ChatInputCommand({
     const memberPermLevelName = resolvePermLevel(memberPermLevel);
     PermLevelCommand.reply(interaction, {
       content: targetUser
-        ? Lang.t('commands:permLevel.theirPermLevel', {
+        ? Lang.t('commands:perm-level.theirPermLevel', {
           user: `${targetUser}`,
           level: memberPermLevel,
           levelName: memberPermLevelName,
         })
-        : Lang.t('commands:permLevel.yourPermLevel', {
+        : Lang.t('commands:perm-level.yourPermLevel', {
           level: memberPermLevel,
           levelName: memberPermLevelName,
         }),

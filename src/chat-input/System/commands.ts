@@ -30,7 +30,7 @@ const CommandsHelpCommand =  new ChatInputCommand({
     // Make sure an option was selected
     if (!cmd) {
       CommandsHelpCommand.reply(interaction, client.embeds.error(
-        Lang.t('commands:commandsHelp.noCmdForQuery', { query: queryOutput }),
+        Lang.t('commands:commands.noCmdForQuery', { query: queryOutput }),
       ));
       return;
     }

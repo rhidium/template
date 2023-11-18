@@ -46,13 +46,13 @@ const ModeratorRoleCommand = new ChatInputCommand({
       });
       ModeratorRoleCommand.reply(
         interaction,
-        client.embeds.success(Lang.t('commands:modRole.removed')),
+        client.embeds.success(Lang.t('commands:mod-role.removed')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: Lang.t('commands:modRole.removedTitle'),
-          description: Lang.t('commands:modRole.removedBy', {
+          title: Lang.t('commands:mod-role.removedTitle'),
+          description: Lang.t('commands:mod-role.removedBy', {
             username: interaction.user.username,
           }),
         }),
@@ -65,7 +65,7 @@ const ModeratorRoleCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: Lang.t('commands:modRole.title'),
+            name: Lang.t('commands:mod-role.title'),
             value: guildSettings.modRoleId
               ? `<@&${guildSettings.modRoleId}>`
               : Lang.t('general:notSet'),
@@ -81,14 +81,14 @@ const ModeratorRoleCommand = new ChatInputCommand({
     });
     ModeratorRoleCommand.reply(
       interaction,
-      client.embeds.success(Lang.t('commands:modRole.changed', {
+      client.embeds.success(Lang.t('commands:mod-role.changed', {
         role: `<@&${role.id}>`,
       })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: Lang.t('commands:modRole.changedTitle'),
+        title: Lang.t('commands:mod-role.changedTitle'),
         fields: [{
           name: Lang.t('general:role'),
           value: `<@&${role.id}>`,

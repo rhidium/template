@@ -25,7 +25,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberJoin.errorLabel'),
+          title: Lang.t('commands:member-join.errorLabel'),
           description: Lang.t('general:errors.noChannel'),
         }),
       );
@@ -36,7 +36,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberJoin.errorLabel'),
+          title: Lang.t('commands:member-join.errorLabel'),
           description: Lang.t('general:errors.missingPerms', {
             permissions: PermissionUtils.bigIntPermOutput(
               requiredPermissions.filter((permission) => !channel.permissionsFor(client.user.id)?.has(permission))
@@ -52,7 +52,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberJoin.errorLabel'),
+          title: Lang.t('commands:member-join.errorLabel'),
           description: Lang.t('general:errors.notTextChannel', {
             channel: channel.toString(),
           }),
@@ -69,8 +69,8 @@ export default new ClientEventListener({
         name: member.user.username,
         iconURL: member.user.displayAvatarURL({ forceStatic: false }),
       })
-      .setTitle(Lang.t('commands:memberJoin.label'))
-      .setDescription(Lang.t('commands:memberJoin.welcome', {
+      .setTitle(Lang.t('commands:member-join.label'))
+      .setDescription(Lang.t('commands:member-join.welcome', {
         user: member.toString(),
         guild: guild.name,
       }))
@@ -104,7 +104,7 @@ export default new ClientEventListener({
         LoggingServices.adminLog(
           guild,
           client.embeds.error({
-            title: Lang.t('commands:memberJoin.errorLabel'),
+            title: Lang.t('commands:member-join.errorLabel'),
             description: Lang.t('general:errors.errAfterPermCheck'),
           }),
         );

@@ -47,13 +47,13 @@ const MemberJoinChannelCommand = new ChatInputCommand({
       });
       MemberJoinChannelCommand.reply(
         interaction,
-        client.embeds.success(Lang.t('commands:memberJoinChannel.disabled')),
+        client.embeds.success(Lang.t('commands:member-join-channel.disabled')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: Lang.t('commands:memberJoinChannel.disabledTitle'),
-          description: Lang.t('commands:memberJoinChannel.disabledBy', {
+          title: Lang.t('commands:member-join-channel.disabledTitle'),
+          description: Lang.t('commands:member-join-channel.disabledBy', {
             username: interaction.user.username,
           }),
         }),
@@ -66,7 +66,7 @@ const MemberJoinChannelCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: Lang.t('commands:memberJoinChannel.title'),
+            name: Lang.t('commands:member-join-channel.title'),
             value: guildSettings.memberJoinChannelId
               ? `<#${guildSettings.memberJoinChannelId}>`
               : Lang.t('general:notSet'),
@@ -82,14 +82,14 @@ const MemberJoinChannelCommand = new ChatInputCommand({
     });
     MemberJoinChannelCommand.reply(
       interaction,
-      client.embeds.success(Lang.t('commands:memberJoinChannel.changed', {
+      client.embeds.success(Lang.t('commands:member-join-channel.changed', {
         channel: channel.toString(),
       })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: Lang.t('commands:memberJoinChannel.changedTitle'),
+        title: Lang.t('commands:member-join-channel.changedTitle'),
         fields: [{
           name: Lang.t('general:channel'),
           value: `<#${channel.id}>`,

@@ -1,5 +1,5 @@
 {
-  "commandsHelp": {
+  "commands": {
     "name": "commands",
     "description": "Receive detailed information and usage help for commands",
     "noCmdForQuery": "No command found for query `{{query}}`"
@@ -13,7 +13,7 @@
     "description": "Invite the bot to your server",
     "prompt": "You can invite me to your server using [this link]({{link}})"
   },
-  "permLevel": {
+  "perm-level": {
     "name": "perm-level",
     "description": "Display your permission level",
     "yourPermLevel": "Your permission level is {{level}}",
@@ -30,10 +30,10 @@
     "noSupportServer": "The support server URL is currently not available, please try again later",
     "prompt": "If you need help with the bot, have any questions or feature requests, you can join the [support server]({{link}}) and ask in the appropriate channel."
   },
-  "printEmbed": {
+  "print-embed": {
     "noEmbeds": "Message has no embeds to print"
   },
-  "userInfo": {
+  "user-info": {
     "noMember": "Direct member couldn't be resolved, please try again",
     "memberNotBoosting": "This member is not boosting the server"
   },
@@ -95,7 +95,7 @@
     "availablePlaceholders": "Available Placeholders for",
     "placeholderDefinition": "Placeholder Definition for"
   },
-  "modLogChannel": {
+  "mod-log-channel": {
     "name": "mod-log-channel",
     "description": "Set the channel to send moderator log messages to",
     "title": "Moderator Logging Channel",
@@ -105,7 +105,7 @@
     "changed": "Moderator logging channel set to {{channel}}",
     "changedTitle": "Moderator Logging Channel Changed"
   },
-  "modRole": {
+  "mod-role": {
     "name": "mod-role",
     "description": "Set the moderator role",
     "title": "Moderator Role",
@@ -115,7 +115,7 @@
     "changed": "Moderator role set to {{role}}",
     "changedTitle": "Moderator Role Changed"
   },
-  "adminLogChannel": {
+  "admin-log-channel": {
     "name": "admin-log-channel",
     "description": "Set the channel to send admin log (audit) messages to",
     "title": "Admin Logging Channel",
@@ -124,7 +124,7 @@
     "changed": "Admin logging channel set to {{channel}}",
     "changedTitle": "Admin Logging Channel Changed"
   },
-  "adminRole": {
+  "admin-role": {
     "name": "admin-role",
     "description": "Set the administrator role",
     "title": "Administrator Role",
@@ -134,7 +134,7 @@
     "changed": "Administrator role set to {{role}}",
     "changedTitle": "Administrator Role Changed"
   },
-  "memberJoinChannel": {
+  "member-join-channel": {
     "name": "member-join-channel",
     "description": "Set the channel to send member join messages to",
     "title": "Member Join Channel",
@@ -144,7 +144,7 @@
     "changed": "Member join channel set to {{channel}}",
     "changedTitle": "Member Join Channel Changed"
   },
-  "memberLeaveChannel": {
+  "member-leave-channel": {
     "name": "member-leave-channel",
     "description": "Set the channel to send member leave messages to",
     "title": "Member Leave Channel",
@@ -154,12 +154,12 @@
     "changed": "Member leave channel set to {{channel}}",
     "changedTitle": "Member Leave Channel Changed"
   },
-  "memberJoin": {
+  "member-join": {
     "label": "Member Join",
     "errorLabel": "Member Join Message Error",
     "welcome": "Welcome {{user}} to {{guild}}"
   },
-  "memberLeave": {
+  "member-leave": {
     "label": "Member Leave",
     "errorLabel": "Member Leave Message Error",
     "goodbye": "{{user}} has left {{guild}}"

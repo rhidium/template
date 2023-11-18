@@ -47,13 +47,13 @@ const ModLogChannelCommand = new ChatInputCommand({
       });
       ModLogChannelCommand.reply(
         interaction,
-        client.embeds.success(Lang.t('commands:modLogChannel.disabled')),
+        client.embeds.success(Lang.t('commands:mod-log-channel.disabled')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: Lang.t('commands:modLogChannel.disabled'),
-          description: Lang.t('commands:modLogChannel.disabledBy', {
+          title: Lang.t('commands:mod-log-channel.disabled'),
+          description: Lang.t('commands:mod-log-channel.disabledBy', {
             username: interaction.user.username,
           }),
         }),
@@ -66,7 +66,7 @@ const ModLogChannelCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: Lang.t('commands:modLogChannel.title'),
+            name: Lang.t('commands:mod-log-channel.title'),
             value: guildSettings.modLogChannelId
               ? `<#${guildSettings.modLogChannelId}>`
               : Lang.t('general:notSet'),
@@ -82,14 +82,14 @@ const ModLogChannelCommand = new ChatInputCommand({
     });
     ModLogChannelCommand.reply(
       interaction,
-      client.embeds.success(Lang.t('commands:modLogChannel.changed', {
+      client.embeds.success(Lang.t('commands:mod-log-channel.changed', {
         channel: channel.toString(),
       })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: Lang.t('commands:modLogChannel.changedTitle'),
+        title: Lang.t('commands:mod-log-channel.changedTitle'),
         fields: [{
           name: Lang.t('general:channel'),
           value: `<#${channel.id}>`,

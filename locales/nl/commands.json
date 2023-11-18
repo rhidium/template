@@ -1,5 +1,5 @@
 {
-  "commandsHelp": {
+  "commands": {
     "name": "commands",
     "description": "Ontvang gedetailleerde informatie en gebruikshulp voor commando's",
     "noCmdForQuery": "Geen commando gevonden voor zoekopdracht `{{query}}`"
@@ -13,7 +13,7 @@
     "description": "Nodig de bot uit naar je server",
     "prompt": "Je kunt me uitnodigen naar je server via [deze link]({{link}})"
   },
-  "permLevel": {
+  "perm-level": {
     "name": "permissie-level",
     "description": "Toon je toestemmingsniveau",
     "yourPermLevel": "Jouw toestemmingsniveau is {{level}}",
@@ -30,10 +30,10 @@
     "noSupportServer": "De URL van de support-server is momenteel niet beschikbaar, probeer het later opnieuw",
     "prompt": "Als je hulp nodig hebt met de bot, vragen hebt of functieverzoeken, kun je de [support-server]({{link}}) joinen en vragen stellen in het juiste kanaal."
   },
-  "printEmbed": {
+  "print-embed": {
     "noEmbeds": "Bericht bevat geen embeds om af te drukken"
   },
-  "userInfo": {
+  "user-info": {
     "noMember": "Direct lid kon niet worden opgelost, probeer het opnieuw",
     "memberNotBoosting": "Dit lid boost de server niet"
   },
@@ -95,7 +95,7 @@
     "availablePlaceholders": "Beschikbare placeholders voor",
     "placeholderDefinition": "Definitie van placeholder voor"
   },
-  "modLogChannel": {
+  "mod-log-channel": {
     "name": "moderator-logboek-channel",
     "description": "Stel het kanaal in om moderator-logberichten naar toe te sturen",
     "title": "Moderator Logboek Kanaal",
@@ -105,7 +105,7 @@
     "changed": "Moderator-logboekkanaal ingesteld op {{channel}}",
     "changedTitle": "Moderator Logboekkanaal Gewijzigd"
   },
-  "modRole": {
+  "mod-role": {
     "name": "moderator-rol",
     "description": "Stel de moderatorrol in",
     "title": "Moderatorrol",
@@ -115,7 +115,7 @@
     "changed": "Moderatorrol ingesteld op {{role}}",
     "changedTitle": "Moderatorrol Gewijzigd"
   },
-  "adminLogChannel": {
+  "admin-log-channel": {
     "name": "beheerder-logboek-kanaal",
     "description": "Stel het kanaal in om beheerderslogboek (audit) berichten naar toe te sturen",
     "title": "Beheerders Logboek Kanaal",
@@ -124,7 +124,7 @@
     "changed": "Beheerders-logboekkanaal ingesteld op {{channel}}",
     "changedTitle": "Beheerders Logboekkanaal Gewijzigd"
   },
-  "adminRole": {
+  "admin-role": {
     "name": "beheerder-role",
     "description": "Stel de beheerdersrol in",
     "title": "Beheerdersrol",
@@ -134,7 +134,7 @@
     "changed": "Beheerdersrol ingesteld op {{role}}",
     "changedTitle": "Beheerdersrol Gewijzigd"
   },
-  "memberJoinChannel": {
+  "member-join-channel": {
     "name": "member-join-channel",
     "description": "Stel het kanaal in om berichten naar toe te sturen als iemand lid wordt",
     "title": "Member Join Kanaal",
@@ -144,7 +144,7 @@
     "changed": "Member Join kanaal ingesteld op {{channel}}",
     "changedTitle": "Member Join Kanaal Gewijzigd"
   },
-  "memberLeaveChannel": {
+  "member-leave-channel": {
     "name": "member-leave-channel",
     "description": "Stel het kanaal in om berichten naar toe te sturen als iemand de server verlaat",
     "title": "Member Leave Kanaal",
@@ -154,12 +154,12 @@
     "changed": "Member Leave kanaal ingesteld op {{channel}}",
     "changedTitle": "Member Leave Kanaal Gewijzigd"
   },
-  "memberJoin": {
+  "member-join": {
     "label": "Member Joined",
     "errorLabel": "Fout bij Member Join Bericht",
     "welcome": "Welkom {{user}} bij {{guild}}"
   },
-  "memberLeave": {
+  "member-leave": {
     "label": "Member Verlaten",
     "errorLabel": "Fout bij Member Verlaten Bericht",
     "goodbye": "{{user}} heeft {{guild}} verlaten"

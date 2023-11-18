@@ -25,7 +25,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberLeave.errorLabel'),
+          title: Lang.t('commands:member-leave.errorLabel'),
           description: Lang.t('general:errors.noChannel'),
         }),
       );
@@ -36,7 +36,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberLeave.errorLabel'),
+          title: Lang.t('commands:member-leave.errorLabel'),
           description: Lang.t('general:errors.missingPerms', {
             permissions: PermissionUtils.bigIntPermOutput(
               requiredPermissions.filter((permission) => !channel.permissionsFor(client.user.id)?.has(permission))
@@ -52,7 +52,7 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: Lang.t('commands:memberLeave.errorLabel'),
+          title: Lang.t('commands:member-leave.errorLabel'),
           description: Lang.t('general:errors.notTextChannel', {
             channel: channel.toString(),
           }),
@@ -72,8 +72,8 @@ export default new ClientEventListener({
         name: member.user.username,
         iconURL: member.user.displayAvatarURL({ forceStatic: false }),
       })
-      .setTitle(Lang.t('commands:memberLeave.label'))
-      .setDescription(Lang.t('commands:memberLeave.goodbye', {
+      .setTitle(Lang.t('commands:member-leave.label'))
+      .setDescription(Lang.t('commands:member-leave.goodbye', {
         user: member.toString(),
         guild: guild.name,
       }))
@@ -110,7 +110,7 @@ export default new ClientEventListener({
         LoggingServices.adminLog(
           guild,
           client.embeds.error({
-            title: Lang.t('commands:memberLeave.errorLabel'),
+            title: Lang.t('commands:member-leave.errorLabel'),
             description: Lang.t('general:errors.errAfterPermCheck'),
           }),
         );

@@ -9,7 +9,7 @@ const PrintEmbedCommand = new MessageContextCommand({
 
     if (!hasEmbeds) { // Might be missing MessageContent scope
       await PrintEmbedCommand.reply(interaction, client.embeds.error(
-        Lang.t('commands:printEmbed.noEmbeds'),
+        Lang.t('commands:print-embed.noEmbeds'),
       ));
       return;
     }
