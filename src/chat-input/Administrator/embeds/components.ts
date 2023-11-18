@@ -2,6 +2,7 @@ import { ButtonStyle, SlashCommandSubcommandBuilder } from 'discord.js';
 import { configureEmbedOptions, embedCommandOption } from './options';
 import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders';
 import { EmbedConfigurationConstants } from './enums';
+import Lang from '@/i18n/i18n';
 
 export const configureEmbedSubcommand = () => {
   const subcommand = new SlashCommandSubcommandBuilder()
@@ -16,18 +17,18 @@ export const configureEmbedControlRow =
   new ActionRowBuilder<ButtonBuilder>().addComponents(
     new ButtonBuilder()
       .setCustomId(EmbedConfigurationConstants.CONFIGURE_CONTINUE)
-      .setLabel('Continue')
+      .setLabel(Lang.t('general:continue'))
       .setStyle(ButtonStyle.Success),
     new ButtonBuilder()
       .setCustomId(EmbedConfigurationConstants.CONFIGURE_CANCEL)
-      .setLabel('Cancel')
+      .setLabel(Lang.t('general:cancel'))
       .setStyle(ButtonStyle.Secondary),
   );
 
 export const configureEmbedAcceptedRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
   new ButtonBuilder()
     .setCustomId(EmbedConfigurationConstants.CONFIGURE_CONTINUE)
-    .setLabel('Saved!')
+    .setLabel(Lang.t('general:saved'))
     .setDisabled(true)
     .setStyle(ButtonStyle.Success),
 );

@@ -1,4 +1,4 @@
-import { stringCommandTypeFromInteger } from '@/chat-input/command-usage/helpers';
+import { stringCommandTypeFromInteger } from '@/chat-input/Developer/command-usage/helpers';
 import {
   COMMAND_STATISTICS_ROOT_ID,
   CommandStatisticsPayload,
@@ -30,7 +30,6 @@ const CommandStatisticOption = new AutoCompleteOption<CommandStatisticsPayload>(
       return {
         name: `${commandName} (${stringCommandTypeFromInteger(Number(type)).replaceAll('*', '')})`,
         value: stat.commandId,
-        description: `Used ${stat.usages.length} times`,
       };
     });
   },

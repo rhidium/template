@@ -1,3 +1,4 @@
+import Lang from '@/i18n/i18n';
 import { UserContextCommand, ArrayUtils, TimeUtils } from '@rhidium/core';
 
 const UserInfoCommand = new UserContextCommand({
@@ -7,7 +8,7 @@ const UserInfoCommand = new UserContextCommand({
 
     if (!guild) {
       UserInfoCommand.reply(interaction, {
-        content: 'This command can only be used on server members, it\'s not available in DM\'s.',
+        content: Lang.t('general:guildOnly'),
         ephemeral: true,
       });
       return;
@@ -18,28 +19,30 @@ const UserInfoCommand = new UserContextCommand({
     const target = await guild.members.fetch(targetUser.id);
     if (!target) {
       UserInfoCommand.reply(interaction, {
-        content: 'Failed to fetch target member.',
+        content: Lang.t('commands:userInfo.noMember'),
         ephemeral: true,
       });
       return;
     }
 
+    const unknown = Lang.t('general:unknown');
+    const none = Lang.t('general:none');
     const maxRoles = 25;
     const roles = target.roles.cache
       .filter((role) => role.id !== guild.roles.everyone.id)
       .toJSON()
       .map((e) => e.toString());
-    const joinedServer = target.joinedAt ? TimeUtils.discordInfoTimestamp(target.joinedAt.valueOf()) : 'Unknown';
+    const joinedServer = target.joinedAt ? TimeUtils.discordInfoTimestamp(target.joinedAt.valueOf()) : unknown;
     const joinedDiscord = TimeUtils.discordInfoTimestamp(targetUser.createdAt.valueOf());  
-    const roleOutput = ArrayUtils.joinWithLimit(roles, maxRoles, 'None');
+    const roleOutput = ArrayUtils.joinWithLimit(roles, maxRoles, none);
     const hasServerAvatar = target.displayAvatarURL() !== null
       && target.displayAvatarURL() !== targetUser.displayAvatarURL();
     const serverAvatarOutput = hasServerAvatar
       ? `[link](<${target.displayAvatarURL({ forceStatic: false, size: 4096 })}>)`
-      : 'None';
+      : none;
     const boostingOutput = target.premiumSinceTimestamp !== null
       ? TimeUtils.discordInfoTimestamp(target.premiumSinceTimestamp)
-      : 'Member is **not** currently boosting';
+      : Lang.t('commands:userInfo.memberNotBoosting');
 
     const embed = client.embeds.branding({
       description: roleOutput,
@@ -49,26 +52,26 @@ const UserInfoCommand = new UserContextCommand({
       },
       fields: [
         {
-          name: 'Nickname',
-          value: target.nickname ?? 'None',
+          name: Lang.t('general:discord.nickname'),
+          value: target.nickname ?? none,
           inline: true,
         },
         {
-          name: 'Server Avatar',
+          name: Lang.t('general:discord.serverAvatar'),
           value: serverAvatarOutput,
         },
         {
-          name: 'Boost',
+          name: Lang.t('general:discord.boost'),
           value: boostingOutput,
           inline: false,
         },
         {
-          name: 'Joined Server',
+          name: Lang.t('general:discord.joinedServer'),
           value: joinedServer,
           inline: false,
         },
         {
-          name: 'Joined Discord',
+          name: Lang.t('general:discord.joinedDiscord'),
           value: joinedDiscord,
           inline: false,
         },

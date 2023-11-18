@@ -9,6 +9,7 @@ import {
   PermissionFlagsBits,
 } from 'discord.js';
 import { Client } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 /**
  * Perform logging of a mod action to a specific server,
@@ -20,7 +21,7 @@ const modLog = async (
   action: string,
   target: GuildMember,
   moderator: GuildMember,
-  reason: string = 'No reason provided.',
+  reason: string = Lang.t('general:noReasonProvided'),
 ) => {
   const settings = await guildSettingsFromCache(guild.id);
   if (!settings || !settings.modLogChannelId) return;
@@ -38,7 +39,9 @@ const modLog = async (
 
   const embed = client.embeds.info({
     title: `${action} | ${target.user.tag}`,
-    description: `**Reason:** ${reason}\n**Moderator:** ${moderator.user.tag}`,
+    description: [`**${Lang.t('general:reason')}:** ${reason}\n**${Lang.t('general:moderator')}:**`,
+      moderator.user.tag,
+    ].join(' '),
   });
   embed.setThumbnail(target.user.displayAvatarURL({ forceStatic: false }));
 

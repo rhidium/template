@@ -14,6 +14,8 @@ import {
 } from 'discord.js';
 import { PlaceholderString } from '.';
 
+// [TRANSLATE] - Some unfortunate soul will have to translate this
+
 export type ChannelPlaceholders = {
   '#channel': string;
   channelCreatedAt: string;

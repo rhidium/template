@@ -1,20 +1,17 @@
 import { SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 import { ChatInputCommand, PermissionUtils, resolvePermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const PermLevelCommand = new ChatInputCommand({
   isEphemeral: true,
-  // aliases: ['pl'],
+  aliases: ['pl'],
   data: new SlashCommandBuilder()
-    .setDescription('Display your internal permission level')
     .addUserOption(
       new SlashCommandUserOption()
         .setName('user')
         .setDescription('The user to check the permission level of')
         .setRequired(false),
     ),
-  requiredResourceIds: {
-    guilds: [ 'something' ],
-  },
   run: async (client, interaction) => {
     const { guild, options } = interaction;
     const targetUser = options.getUser('user', false);
@@ -27,9 +24,17 @@ const PermLevelCommand = new ChatInputCommand({
       guild,
     );
     const memberPermLevelName = resolvePermLevel(memberPermLevel);
-    const prefix = targetUser ? `${targetUser}'s` : 'Your';
     PermLevelCommand.reply(interaction, {
-      content: `${prefix} internal permission level is: ${memberPermLevel} - ${memberPermLevelName}`,
+      content: targetUser
+        ? Lang.t('commands:permLevel.theirPermLevel', {
+          user: `${targetUser}`,
+          level: memberPermLevel,
+          levelName: memberPermLevelName,
+        })
+        : Lang.t('commands:permLevel.yourPermLevel', {
+          level: memberPermLevel,
+          levelName: memberPermLevelName,
+        }),
     });
   },
 });

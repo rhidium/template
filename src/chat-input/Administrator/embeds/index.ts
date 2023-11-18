@@ -1,25 +1,20 @@
 import {
   SlashCommandBuilder,
 } from 'discord.js';
-import { embedCommandOption, manageEmbedFieldsSubcommandGroup } from './options';
+import { manageEmbedFieldsSubcommandGroup, showEmbedSubcommand } from './options';
 import { configureEmbedSubcommand } from './components';
 import { embedFromEmbedModel, settingsKeyFromEmbedOption } from './helpers';
 import { configureEmbedController, manageEmbedFieldsController } from './controllers';
 import { EmbedConfigurationConstants } from './enums';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
 import { guildSettingsFromCache } from '@/database';
+import Lang from '@/i18n/i18n';
 
 const ConfigureEmbedsCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
   guildOnly: true,
   data: new SlashCommandBuilder()
-    .setDescription('Configure embeds used throughout the bot')
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName(EmbedConfigurationConstants.SHOW_SUBCOMMAND_NAME)
-        .setDescription('Display/render an embed')
-        .addIntegerOption(embedCommandOption),
-    )
+    .addSubcommand(showEmbedSubcommand)
     .addSubcommand(configureEmbedSubcommand())
     .addSubcommandGroup(manageEmbedFieldsSubcommandGroup),
   run: async (client, interaction) => {
@@ -40,7 +35,7 @@ const ConfigureEmbedsCommand = new ChatInputCommand({
     if (!guildSettings) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error('Guild settings not found'),
+        client.embeds.error(Lang.t('general:settings.notFound')),
       );
       return;
     }
@@ -67,14 +62,6 @@ const ConfigureEmbedsCommand = new ChatInputCommand({
 
     case EmbedConfigurationConstants.SHOW_SUBCOMMAND_NAME:
     default: {
-      if (setting === null) {
-        ConfigureEmbedsCommand.reply(
-          interaction,
-          client.embeds.error('Embed not configured, nothing to show'),
-        );
-        return;
-      }
-
       const embed = embedFromEmbedModel(setting);
       ConfigureEmbedsCommand.reply(interaction, { embeds: [embed] });
       break;

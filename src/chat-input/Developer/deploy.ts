@@ -4,6 +4,7 @@ import { ChatInputCommand, PermLevel } from '@rhidium/core';
 const DeployCommand = new ChatInputCommand({
   permLevel: PermLevel['Bot Administrator'],
   data: new SlashCommandBuilder()
+    .setDescription('Deploy commands globally or in a guild/server')
     .addStringOption((option) =>
       option
         .setName('scope')

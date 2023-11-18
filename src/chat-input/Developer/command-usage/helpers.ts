@@ -2,29 +2,37 @@ import { ApplicationCommandType } from 'discord.js';
 import { stripIndents } from 'common-tags';
 import { Client, ComponentCommandType, TimeUtils, UnitConstants } from '@rhidium/core';
 import { CommandStatisticsPayload } from '@/database/CommandStatistics';
+import Lang from '@/i18n/i18n';
+
+const unknown = Lang.t('general:unknown');
+const never = Lang.t('general:never');
 
 export const stringCommandTypeFromInteger = (type: number) => {
-  if (type === ApplicationCommandType.ChatInput) return '**Slash** Command';
-  if (type === ApplicationCommandType.User) return '**User Context Menu** Command';
-  if (type === ApplicationCommandType.Message) return '**Message Context Menu** Command';
-  if (type === ComponentCommandType.BUTTON) return '**Button** Component';
-  if (type === ComponentCommandType.SELECT_MENU) return '**Select Menu** Component';
-  if (type === ComponentCommandType.MODAL) return '**Modal** Component';
-  return '**Unknown** Command';
+  const command = Lang.t('general:componentNames.command');
+  const component = Lang.t('general:componentNames.component');
+  if (type === ApplicationCommandType.ChatInput) return `**${Lang.t('general:componentNames.slash')}** ${command}`;
+  if (type === ApplicationCommandType.User) return `**${Lang.t('general:componentNames.userContext')}**`;
+  if (type === ApplicationCommandType.Message) return `**${Lang.t('general:componentNames.messageContext')}**`;
+  if (type === ComponentCommandType.BUTTON) return `**${Lang.t('general:componentNames.button')}** ${component}`;
+  if (type === ComponentCommandType.SELECT_MENU) {
+    return `**${Lang.t('general:componentNames.selectMenu')}** ${component}`;
+  }
+  if (type === ComponentCommandType.MODAL) return `**${Lang.t('general:componentNames.modal')}** ${component}`;
+  return `**${Lang.t('general:unknown')}** ${command}`;
 };
 
 export const embedFromUsageStatistics = (client: Client, stats: CommandStatisticsPayload) => {
   const [commandId] = stats.commandId.split('@');
 
-  const runtimeAverage = stats.runtimeMean ? `${stats.runtimeMean.toFixed(2)}ms` : 'Unknown';
-  const runtimeMedian = stats.runtimeMedian ? `${stats.runtimeMedian.toFixed(2)}ms` : 'Unknown';
-  const runtimeVariance = stats.runtimeVariance ? `${stats.runtimeVariance.toFixed(2)}ms` : 'Unknown';
-  const runtimeDeviation = stats.runtimeStdDeviation ? `${stats.runtimeStdDeviation.toFixed(2)}ms` : 'Unknown';
+  const runtimeAverage = stats.runtimeMean ? `${stats.runtimeMean.toFixed(2)}ms` : unknown;
+  const runtimeMedian = stats.runtimeMedian ? `${stats.runtimeMedian.toFixed(2)}ms` : unknown;
+  const runtimeVariance = stats.runtimeVariance ? `${stats.runtimeVariance.toFixed(2)}ms` : unknown;
+  const runtimeDeviation = stats.runtimeStdDeviation ? `${stats.runtimeStdDeviation.toFixed(2)}ms` : unknown;
 
-  const runtimeTotal = stats.runtimeTotal ? TimeUtils.msToHumanReadableTime(stats.runtimeTotal) : 'Unknown';
-  const firstUsedAt = stats.firstUsedAt ? TimeUtils.discordInfoTimestamp(stats.firstUsedAt.valueOf()) : 'Never';
-  const lastUsedAt = stats.lastUsedAt ? TimeUtils.discordInfoTimestamp(stats.lastUsedAt.valueOf()) : 'Never';
-  const lastErrorAt =  stats.lastErrorAt ? TimeUtils.discordInfoTimestamp(stats.lastErrorAt.valueOf()) : 'Never';
+  const runtimeTotal = stats.runtimeTotal ? TimeUtils.msToHumanReadableTime(stats.runtimeTotal) : unknown;
+  const firstUsedAt = stats.firstUsedAt ? TimeUtils.discordInfoTimestamp(stats.firstUsedAt.valueOf()) : never;
+  const lastUsedAt = stats.lastUsedAt ? TimeUtils.discordInfoTimestamp(stats.lastUsedAt.valueOf()) : never;
+  const lastErrorAt =  stats.lastErrorAt ? TimeUtils.discordInfoTimestamp(stats.lastErrorAt.valueOf()) : never;
 
   const usagesLastHour = stats.usages.filter((u) => u.valueOf() > Date.now() - UnitConstants.MS_IN_ONE_HOUR);
   const usagesLastDay = stats.usages.filter((u) => u.valueOf() > Date.now() - UnitConstants.MS_IN_ONE_DAY);
@@ -38,6 +46,7 @@ export const embedFromUsageStatistics = (client: Client, stats: CommandStatistic
   const averagePerMonth = TimeUtils.calculateAverageFromDateArr(stats.usages, UnitConstants.MS_IN_ONE_DAY * 30);
   const averagePerYear = TimeUtils.calculateAverageFromDateArr(stats.usages, UnitConstants.MS_IN_ONE_DAY * 365);
 
+  // Note: Developer only, no need to localize
   const embed = client.embeds.branding({
     title: `Command Statistics for ${commandId}`,
     description: stripIndents`
@@ -94,7 +103,7 @@ export const embedFromUsageStatistics = (client: Client, stats: CommandStatistic
       },
       {
         name: 'Last Error Message',
-        value: stats.lastError ? `\`\`\`\n${stats.lastError}\`\`\`` : 'Never',
+        value: stats.lastError ? `\`\`\`\n${stats.lastError}\`\`\`` : never,
         inline: !stats.lastError,
       },
 
@@ -123,8 +132,8 @@ export const compactEmbedFromUsageStatistics = (
     description: 'The top most used commands',
     fields: stats.map((stat, index) => {
       const [ commandId ] = stat.commandId.split('@');
-      const runtimeAverage = stat.runtimeMean ? `${stat.runtimeMean.toFixed(2)}ms` : 'Unknown';
-      const totalRuntime = stat.runtimeTotal ? `${TimeUtils.msToHumanReadableTime(stat.runtimeTotal)}` : 'Unknown';
+      const runtimeAverage = stat.runtimeMean ? `${stat.runtimeMean.toFixed(2)}ms` : unknown;
+      const totalRuntime = stat.runtimeTotal ? `${TimeUtils.msToHumanReadableTime(stat.runtimeTotal)}` : unknown;
       return {
         name: `${index + 1 + indexOffset}. ${commandId} (${stringCommandTypeFromInteger(stat.type)})`,
         value: `Used ${stat.usages.length} time${stat.usages.length === 1 ? '' : 's'}`

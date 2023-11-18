@@ -7,12 +7,12 @@ import PlaceholderOption from '@/auto-completes/placeholder';
 import { stripIndents } from 'common-tags';
 import ConfigureEmbedsCommand from '../embeds';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const PlaceholdersCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
   guildOnly: true,
   data: new SlashCommandBuilder()
-    .setDescription('Manage placeholders used throughout the bot')
     .addSubcommand(placeholderInfoSubcommand)
     .addSubcommandGroup(listPlaceholderSubcommandGroup),
   run: async (client, interaction) => {
@@ -26,24 +26,18 @@ const PlaceholdersCommand = new ChatInputCommand({
     const manageEmbedCommand = await client.commandManager.commandLink(ConfigureEmbedsCommand.data.name);
     if (subcommand === PlaceholderConstants.PLACEHOLDER_INFO_SUBCOMMAND_NAME) {
       const embed = client.embeds.branding({
-        title: 'Placeholder Information',
-        description: stripIndents`
-          Placeholders can be used in messages to dynamically replace the placeholder with a value.
-
-          For example, \`{{user}}\` will be replaced with the user's name, like **${interaction.member.user.username}**.
-
-          These placeholders can be applied to any message that supports them,
-          like the welcome and leave messages.
-
-          You can start customizing placeholders by using the **${manageEmbedCommand}** command,
-          which will display previews of what your final embeds will look like.
-        `,
+        title: Lang.t('commands:placeholders.placeholderInfoTitle'),
+        description: stripIndents(Lang.t('commands:placeholders.placeholderInfo', {
+          user: 'user',
+          username: interaction.member.user.username,
+          command: manageEmbedCommand,
+        })),
         fields: [{
-          name: 'Placeholder Groups',
+          name: Lang.t('commands:placeholders.placeholderGroups'),
           value: `\`\`\`${Object.keys(groupedDiscordPlaceholders).length}\`\`\``,
           inline: true,
         }, {
-          name: 'Placeholders',
+          name: Lang.t('commands:placeholders.placeholders'),
           value: `\`\`\`${Object.keys(discordPlaceholders).length}\`\`\``,
           inline: true,
         }],
@@ -60,7 +54,11 @@ const PlaceholdersCommand = new ChatInputCommand({
         const placeholderGroup = options.getString(PlaceholderGroupOption.name, true);
         const resolvedGroup = groupedDiscordPlaceholders[placeholderGroup];
         if (!resolvedGroup) {
-          const embed = client.embeds.error(`Placeholder group \`${placeholderGroup}\` not found`);
+          const embed = client.embeds.error(
+            Lang.t('commands:placeholders.placeholderGroupNotFound', {
+              group: placeholderGroup,
+            }),
+          );
           PlaceholdersCommand.reply(interaction, embed);
           return;
         }
@@ -70,7 +68,7 @@ const PlaceholdersCommand = new ChatInputCommand({
           .padEnd(longestKey.length, ' ');
 
         const embed = client.embeds.branding({
-          title: `Available Placeholders for ${placeholderGroup}`,
+          title: `${Lang.t('commands:placeholders.availablePlaceholders')} ${placeholderGroup}`,
           description: Object.entries(resolvedGroup)
             .map(([k, v]) => `**\`{{${centerPadKey(k)}}}\`** ${v}`)
             .join('\n'),
@@ -84,13 +82,15 @@ const PlaceholdersCommand = new ChatInputCommand({
         const cleanPlaceholder = placeholder.replace(/{{|}}/g, '');
         const placeholderValue = discordPlaceholders[cleanPlaceholder as keyof typeof discordPlaceholders];
         if (!placeholderValue) {
-          const embed = client.embeds.error(`Placeholder \`${placeholder}\` not found`);
+          const embed = client.embeds.error(Lang.t('commands:placeholders.placeholderNotFound', {
+            placeholder: cleanPlaceholder,
+          }));
           PlaceholdersCommand.reply(interaction, embed);
           return;
         }
 
         const embed = client.embeds.branding({
-          title: `Placeholder Definition for ${cleanPlaceholder}`,
+          title: `${Lang.t('commands:placeholders.placeholderDefinition')} ${cleanPlaceholder}`,
           description: `**\`${placeholder}\`**\n\`\`\`${placeholderValue}\`\`\``,
         });
         PlaceholdersCommand.reply(interaction, embed);

@@ -26,7 +26,7 @@ We've compromised a list a list of
 - Type-safe, re-usable [controllers](https://rhidium.xyz/modules/Commands.Controllers.html)
 - Dynamic [Component](https://rhidium.xyz/modules/Commands.html) Handlers/File-Loaders
 - Synchronized local & API commands, automatic refreshes
-- Fully localized, convenience localization for components
+- Fully localized, convenience localization for commands
 - Colorful console logging & verbose, organized file logging
 - Wide range of everyday utilities
 - CRON and interval jobs

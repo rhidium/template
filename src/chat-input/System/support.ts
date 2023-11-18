@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, CommandCooldownType, UnitConstants } from '@rhidium/core';
 import { appConfig } from '@/config';
+import Lang from '@/i18n/i18n';
 
 const SupportCommand = new ChatInputCommand({
   data: new SlashCommandBuilder()
@@ -13,18 +14,15 @@ const SupportCommand = new ChatInputCommand({
   run: async (client, interaction) => {
     if (!appConfig.urls?.support_server) {
       await SupportCommand.reply(interaction, client.embeds.error(
-        'The support server URL is currently not available, please try again later',
+        Lang.t('commands:support.noSupportServer'),
       ));
       return;
     }
 
     await SupportCommand.reply(interaction, client.embeds.branding({
-      description: [
-        'If you need help with the bot, have any questions or feature requests, you can join the ',
-        `[support server](${
-          appConfig.urls.support_server
-        }) and ask in the appropriate channel.`,
-      ].join(''),
+      description: Lang.t('commands:support.prompt', {
+        link: appConfig.urls.support_server,
+      }),
     }));
   },
 });

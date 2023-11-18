@@ -1,4 +1,5 @@
 import { cooldownFromCache, prisma, updateCooldown } from '@/database';
+import Lang from '@/i18n/i18n';
 import {
   CommandCooldownType,
   CommandMiddlewareFunction,
@@ -53,9 +54,10 @@ export const persistentCooldownMiddleware: CommandMiddlewareFunction = async ({
     const expiresIn = TimeUtils.msToHumanReadableTime(remaining);
     const relativeOutput = expiresIn === '0 seconds' ? '1 second' : expiresIn;
     InteractionUtils.replyDynamic(client, interaction, {
-      content: `You are on cooldown (type ${
-        CommandCooldownType[cooldown.type]
-      }) for this command - please wait **${relativeOutput}** before using this command again`,
+      content: Lang.t('general:cmdCooldown', {
+        type: CommandCooldownType[cooldown.type],
+        duration: relativeOutput,
+      }),
       ephemeral: true,
     });
     // Don't go next =)

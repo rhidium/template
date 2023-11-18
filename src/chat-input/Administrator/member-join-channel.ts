@@ -2,22 +2,23 @@ import { guildSettingsFromCache, updateGuildSettings } from '@/database';
 import { LoggingServices } from '@/services';
 import { ChannelType, SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
-const AdminLogChannelCommand = new ChatInputCommand({
+const MemberJoinChannelCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
   isEphemeral: true,
   guildOnly: true,
   data: new SlashCommandBuilder()
-    .setDescription('Set the channel to send admin log (audit) messages to')
+    .setDescription('Set the channel to send member join messages to')
     .addChannelOption((option) => option
       .setName('channel')
-      .setDescription('The channel to send admin log (audit) messages to')
+      .setDescription('The channel to send member join messages to')
       .setRequired(false)
       .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
     )
     .addBooleanOption((option) => option
       .setName('disable')
-      .setDescription('Disable admin log messages')
+      .setDescription('Disable member join messages')
       .setRequired(false),
     ),
   run: async (client, interaction) => {
@@ -28,69 +29,73 @@ const AdminLogChannelCommand = new ChatInputCommand({
     const guildAvailable = InteractionUtils.requireAvailableGuild(client, interaction);
     if (!guildAvailable) return;
 
-    await AdminLogChannelCommand.deferReplyInternal(interaction);
+    await MemberJoinChannelCommand.deferReplyInternal(interaction);
 
     const guildSettings = await guildSettingsFromCache(interaction.guildId);
     if (!guildSettings) {
-      AdminLogChannelCommand.reply(
+      MemberJoinChannelCommand.reply(
         interaction,
-        client.embeds.error('Guild settings not found, please try again later'),
+        client.embeds.error(Lang.t('general:settings.notFound')),
       );
       return;
     }
 
     if (disable) {
-      guildSettings.adminLogChannelId = null;
+      guildSettings.memberJoinChannelId = null;
       await updateGuildSettings(guildSettings, {
-        data: { adminLogChannelId: null },
+        data: { memberJoinChannelId: null },
       });
-      AdminLogChannelCommand.reply(
+      MemberJoinChannelCommand.reply(
         interaction,
-        client.embeds.success('Admin logging disabled'),
+        client.embeds.success(Lang.t('commands:memberJoinChannel.disabled')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: 'Admin Logging Disabled',
-          description: `Admin logging has been disabled by ${interaction.user}`,
+          title: Lang.t('commands:memberJoinChannel.disabledTitle'),
+          description: Lang.t('commands:memberJoinChannel.disabledBy', {
+            username: interaction.user.username,
+          }),
         }),
       );
       return;
     }
 
     if (!channel) {
-      AdminLogChannelCommand.reply(
+      MemberJoinChannelCommand.reply(
         interaction,
         client.embeds.branding({
           fields: [{
-            name: 'Admin Logging Channel',
-            value: guildSettings.adminLogChannelId
-              ? `<#${guildSettings.adminLogChannelId}>`
-              : 'Not set',
+            name: Lang.t('commands:memberJoinChannel.title'),
+            value: guildSettings.memberJoinChannelId
+              ? `<#${guildSettings.memberJoinChannelId}>`
+              : Lang.t('general:notSet'),
           }],
         })
       );
       return;
     }
 
-    guildSettings.adminLogChannelId = channel.id;
+    guildSettings.memberJoinChannelId = channel.id;
     await updateGuildSettings(guildSettings, {
-      data: { adminLogChannelId: channel.id },
+      data: { memberJoinChannelId: channel.id },
     });
-    AdminLogChannelCommand.reply(
+    MemberJoinChannelCommand.reply(
       interaction,
-      client.embeds.success(`Admin logging channel set to ${channel}`),
+      client.embeds.success(Lang.t('commands:memberJoinChannel.changed', {
+        channel: channel.toString(),
+      })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Admin Logging Channel Changed',
+        title: Lang.t('commands:memberJoinChannel.changedTitle'),
         fields: [{
-          name: 'Channel',
+          name: Lang.t('general:channel'),
           value: `<#${channel.id}>`,
           inline: true,
         }, {
-          name: 'Member',
+          name: Lang.t('general:member'),
           value: interaction.user.toString(),
           inline: true,
         }],
@@ -100,4 +105,4 @@ const AdminLogChannelCommand = new ChatInputCommand({
   },
 });
 
-export default AdminLogChannelCommand;
+export default MemberJoinChannelCommand;

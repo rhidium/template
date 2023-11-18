@@ -2,6 +2,7 @@ import { guildSettingsFromCache, updateGuildSettings } from '@/database';
 import { LoggingServices } from '@/services';
 import { SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const AdministratorRoleCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
@@ -33,7 +34,7 @@ const AdministratorRoleCommand = new ChatInputCommand({
     if (!guildSettings) {
       AdministratorRoleCommand.reply(
         interaction,
-        client.embeds.error('Guild settings not found, please try again later'),
+        client.embeds.error(Lang.t('general:settings.notFound')),
       );
       return;
     }
@@ -45,13 +46,15 @@ const AdministratorRoleCommand = new ChatInputCommand({
       });
       AdministratorRoleCommand.reply(
         interaction,
-        client.embeds.success('Administrator role removed/unset'),
+        client.embeds.success(Lang.t('commands:adminRole.removed')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: 'Administrator Role Removed',
-          description: `The Administrator role has been removed by ${interaction.user}`,
+          title: Lang.t('commands:adminRole.removedTitle'),
+          description: Lang.t('commands:adminRole.removedBy', {
+            username: interaction.user.username,
+          }),
         }),
       );
       return;
@@ -62,10 +65,10 @@ const AdministratorRoleCommand = new ChatInputCommand({
         interaction,
         client.embeds.branding({
           fields: [{
-            name: 'Administrator Role',
+            name: Lang.t('commands:adminRole.title'),
             value: guildSettings.adminRoleId
               ? `<@&${guildSettings.adminRoleId}>`
-              : 'Not set',
+              : Lang.t('general:notSet'),
           }],
         })
       );
@@ -78,18 +81,20 @@ const AdministratorRoleCommand = new ChatInputCommand({
     });
     AdministratorRoleCommand.reply(
       interaction,
-      client.embeds.success(`Administrator role changed to ${role}`),
+      client.embeds.success(Lang.t('commands:adminRole.changed', {
+        role: `<@&${role.id}>`,
+      })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Administrator Role Changed',
+        title: Lang.t('commands:adminRole.changedTitle'),
         fields: [{
-          name: 'Role',
+          name: Lang.t('general:role'),
           value: `<@&${role.id}>`,
           inline: true,
         }, {
-          name: 'Member',
+          name: Lang.t('general:member'),
           value: interaction.user.toString(),
           inline: true,
         }],

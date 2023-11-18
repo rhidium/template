@@ -10,7 +10,6 @@ import { prisma } from '@/database';
 export const compactEntriesPerPage = 10;
 
 const CommandUsageCommand = new ChatInputCommand({
-  category: 'Developer', // Could alternatively use folder name
   permLevel: PermLevel['Bot Administrator'],
   data: new SlashCommandBuilder()
     .setDescription('View detailed command usage information')

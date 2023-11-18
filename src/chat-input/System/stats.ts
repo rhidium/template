@@ -1,3 +1,4 @@
+import Lang from '@/i18n/i18n';
 import { ChatInputCommand, TimeUtils, UnitConstants } from '@rhidium/core';
 import { stripIndents } from 'common-tags';
 import { getInfo } from 'discord-hybrid-sharding';
@@ -8,13 +9,12 @@ const discordVersionDocLink = 'https://discord.js.org/#/docs/discord.js/main/gen
 const nodeVersionDocLink = `https://nodejs.org/docs/latest-${ process.version.split('.')[0] }.x/api/#`;
 
 const StatsCommand = new ChatInputCommand({
-  // aliases: ['ping'],
-  data: new SlashCommandBuilder()
-    .setDescription('Display detailed bot statistics'),
+  aliases: ['ping'],
+  data: new SlashCommandBuilder(),
   run: async (client, interaction) => {
     // Latency
     const reply = await interaction.reply({
-      content: 'Pinging...',
+      content: Lang.t('commands:stats.pinging'),
       fetchReply: true,
     });
     const fullCircleLatency = reply.createdTimestamp - interaction.createdTimestamp;
@@ -38,41 +38,46 @@ const StatsCommand = new ChatInputCommand({
     const memoryAvailableInMB = memoryUsage.heapTotal / UnitConstants.BYTES_IN_KIB / UnitConstants.BYTES_IN_KIB;
     const objCacheSizeInMB = memoryUsage.external / UnitConstants.BYTES_IN_KIB / UnitConstants.BYTES_IN_KIB;
 
+    const apiLatencyStr = Lang.t('general:system.apiLatency');
+    const fullCircleLatencyStr = Lang.t('general:system.fullCircleLatency');
+    const memoryUsageStr = Lang.t('general:system.memoryUsage');
+    const cacheSizeStr = Lang.t('general:system.cacheSize');
+
     // Create our embed
     const embed = client.embeds.branding({
-      title: 'Statistics',
+      title: Lang.t('general:statistics'),
       fields: [{
-        name: 'Latency',
+        name: Lang.t('general:system.latency'),
         value: stripIndents`
-          ${latencyEmoji(Math.round(client.ws.ping))} **API Latency:** ${Math.round(client.ws.ping)}ms
-          ${latencyEmoji(fullCircleLatency)} **Full Circle Latency:** ${Math.round(fullCircleLatency)}ms
+          ${latencyEmoji(Math.round(client.ws.ping))} **${apiLatencyStr}:** ${Math.round(client.ws.ping)}ms
+          ${latencyEmoji(fullCircleLatency)} **${fullCircleLatencyStr}:** ${Math.round(fullCircleLatency)}ms
         `,
         inline: true,
       }, {
-        name: 'Memory',
+        name: Lang.t('general:system.memory'),
         value: stripIndents`
-          💾 **Memory Usage:** ${ memoryUsedInMB.toFixed(2) }/${ memoryAvailableInMB.toFixed(2) } MB 
-          ♻️ **Cache Size:** ${ objCacheSizeInMB.toFixed(2) } MB
+          💾 **${memoryUsageStr}:** ${ memoryUsedInMB.toFixed(2) }/${ memoryAvailableInMB.toFixed(2) } MB 
+          ♻️ **${cacheSizeStr}:** ${ objCacheSizeInMB.toFixed(2) } MB
         `,
         inline: true,
       }, {
-        name: 'Uptime',
+        name: Lang.t('general:system.uptime'),
         value: `🕐 ${TimeUtils.msToHumanReadableTime(client.uptime ?? 0)}`,
         inline: false,
       }, {
-        name: 'Counts',
+        name: Lang.t('general:counts.label'),
         value: [
-          `👪 **Servers:** ${guildCount.toLocaleString()}`,
-          `🙋 **Members:** ${memberCount.toLocaleString()}`,
-          `#️⃣ **Channels:** ${channelCount.toLocaleString()}`,
-          `🪪 **Roles:** ${roleCount.toLocaleString()}`,
+          `👪 **${Lang.t('general:counts.servers')}:** ${guildCount.toLocaleString()}`,
+          `🙋 **${Lang.t('general:counts.members')}:** ${memberCount.toLocaleString()}`,
+          `#️⃣ **${Lang.t('general:counts.channels')}:** ${channelCount.toLocaleString()}`,
+          `🪪 **${Lang.t('general:counts.roles')}:** ${roleCount.toLocaleString()}`,
         ].join('\n'),
         inline: true,
       }, {
-        name: 'System',
+        name: Lang.t('general:system.label'),
         value: stripIndents`
-          ⚙️ **Discord.js Version:** [v${ discordVersion }](${ discordVersionDocLink })
-          ⚙️ **Node Version:** [${ process.version }](${ nodeVersionDocLink })
+          ⚙️ **Discord.js ${Lang.t('general:system.version')}:** [v${ discordVersion }](${ discordVersionDocLink })
+          ⚙️ **Node ${Lang.t('general:system.version')}:** [${ process.version }](${ nodeVersionDocLink })
         `,
         inline: true,
       }],
@@ -99,12 +104,12 @@ const StatsCommand = new ChatInputCommand({
         shardsOutput = stripIndents`
           ${shardStatusArr.join('')}
 
-          🟩 = Shard is online and responsive
-          🟨 = Shard spawned, but hasn't logged in
-          🟥 = Shard has not been spawned
+          🟩 = ${Lang.t('general:shards.onlineAndResponsive')}
+          🟨 = ${Lang.t('general:shards.spawnedButNotReady')}
+          🟥 = ${Lang.t('general:shards.unavailable')}
         `;
       } catch {
-        shardsOutput = 'Shards are still being spawned, please try again later';
+        shardsOutput = Lang.t('general:shards.busySpawning');
       }
   
       const totalMemberCount = client.cluster
@@ -122,16 +127,16 @@ const StatsCommand = new ChatInputCommand({
         value: '\u200b',
         inline: false,
       }, {
-        name: 'Cluster',
+        name: Lang.t('general:cluster.label'),
         value: stripIndents`
-          📡 **Shards:** ${getInfo().TOTAL_SHARDS.toLocaleString()}
-          📡 **Clusters:** ${client.cluster.count.toLocaleString()}
-          🙋 **Total Members:** ${totalMemberCount.toLocaleString()}
-          👪 **Total Guilds:** ${totalGuildCount.toLocaleString()}
+          📡 **${Lang.t('general:cluster.shards')}:** ${getInfo().TOTAL_SHARDS.toLocaleString()}
+          📡 **${Lang.t('general:cluster.clusters')}:** ${client.cluster.count.toLocaleString()}
+          🙋 **${Lang.t('general:cluster.totalMembers')}:** ${totalMemberCount.toLocaleString()}
+          👪 **${Lang.t('general:cluster.totalGuilds')}:** ${totalGuildCount.toLocaleString()}
         `,
         inline: true,
       }, {
-        name: 'Shard Status',
+        name: Lang.t('general:cluster.shardStatus'),
         value: shardsOutput,
         inline: true,
       });

@@ -1,3 +1,4 @@
+import Lang from '@/i18n/i18n';
 import { APICommandType, AutoCompleteOption, PermissionUtils } from '@rhidium/core';
 
 export enum CommandAutoCompleteQueryType {
@@ -9,7 +10,7 @@ export enum CommandAutoCompleteQueryType {
 
 const CommandOption = new AutoCompleteOption<APICommandType>({
   name: 'command',
-  description: 'Select the command',
+  description: 'Select a command',
   required: true,
   run: async (query, client, interaction) => {
     const { member, guild } = interaction;
@@ -39,19 +40,19 @@ const CommandOption = new AutoCompleteOption<APICommandType>({
 
     return [
       ...categories.map((c) => ({
-        name: `Category: ${c}`,
+        name: `${Lang.t('general:componentNames.category')}: ${c}`,
         value: `${CommandAutoCompleteQueryType.CATEGORY}@${c}`,
       })),
       ...commands.map((c) => ({
-        name: `Slash Command: ${c.data.name}`,
+        name: `${Lang.t('general:componentNames.slash')} ${Lang.t('general:componentNames.command')}: ${c.data.name}`,
         value: `${CommandAutoCompleteQueryType.SLASH}@${c.data.name}`,
       })),
       ...userCtxCommands.map((c) => ({
-        name: `User Context Menu: ${c.data.name}`,
+        name: `${Lang.t('general:componentNames.userContext')}: ${c.data.name}`,
         value: `${CommandAutoCompleteQueryType.USER_CONTEXT}@${c.data.name}`,
       })),
       ...messageCtxCommands.map((c) => ({
-        name: `Message Context Menu: ${c.data.name}`,
+        name: `${Lang.t('general:componentNames.messageContext')}: ${c.data.name}`,
         value: `${CommandAutoCompleteQueryType.MESSAGE_CONTEXT}@${c.data.name}`,
       })),
     ];

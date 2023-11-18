@@ -1,9 +1,9 @@
 import { OAuth2Scopes, SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, CommandCooldownType, PermissionUtils, UnitConstants } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const InviteCommand = new ChatInputCommand({
-  data: new SlashCommandBuilder()
-    .setDescription('Invite the bot to your server'),
+  data: new SlashCommandBuilder(),
   cooldown: {
     type: CommandCooldownType.Channel,
     usages: 1,
@@ -17,7 +17,7 @@ const InviteCommand = new ChatInputCommand({
       permissions: allUniqueClientPermissions,
     });
     await InviteCommand.reply(interaction, client.embeds.branding({
-      description: `You can invite me to your server using [this link](${inviteLink})`,
+      description: Lang.t('commands:invite.prompt', { link: inviteLink }),
     }));
   },
 });

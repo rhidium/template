@@ -1,12 +1,11 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, CommandType, PermissionUtils } from '@rhidium/core';
 import CommandOption, { CommandAutoCompleteQueryType } from '../../auto-completes/command';
+import Lang from '@/i18n/i18n';
 
 const CommandsHelpCommand =  new ChatInputCommand({
   isEphemeral: true,
-  data: new SlashCommandBuilder().setDescription(
-    'Receive detailed information and usage help for commands',
-  ).addStringOption(CommandOption.addOptionHandler),
+  data: new SlashCommandBuilder().addStringOption(CommandOption.addOptionHandler),
   run: async (client, interaction) => {
     // Declarations
     const { member, guild } = interaction;
@@ -31,7 +30,7 @@ const CommandsHelpCommand =  new ChatInputCommand({
     // Make sure an option was selected
     if (!cmd) {
       CommandsHelpCommand.reply(interaction, client.embeds.error(
-        `No command found for query: **\`${queryOutput}\`**`,
+        Lang.t('commands:commandsHelp.noCmdForQuery', { query: queryOutput }),
       ));
       return;
     }

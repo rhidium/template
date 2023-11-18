@@ -1,9 +1,10 @@
-import { embedFromEmbedModel } from '@/chat-input/administrator/embeds/helpers';
+import { embedFromEmbedModel } from '@/chat-input/Administrator/embeds/helpers';
 import { guildSettingsFromCache } from '@/database';
 import { buildDiscordPlaceholders, replacePlaceholders, replacePlaceholdersAcrossEmbed } from '@/placeholders';
 import { LoggingServices } from '@/services';
 import { EmbedBuilder, Events, PermissionFlagsBits } from 'discord.js';
 import { ClientEventListener, PermissionUtils, TimeUtils } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const requiredPermissions = [
   PermissionFlagsBits.SendMessages,
@@ -24,8 +25,8 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: 'Member Leave Message Error',
-          description: `No channel found with ID ${guildSettings.memberLeaveChannelId}`,
+          title: Lang.t('commands:memberLeave.errorLabel'),
+          description: Lang.t('general:errors.noChannel'),
         }),
       );
       return;
@@ -35,11 +36,13 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: 'Member Leave Message Error',
-          description: `No permissions to send member leave message in specified channel ${channel}, `
-            + `missing: permissions: ${PermissionUtils.bigIntPermOutput(
+          title: Lang.t('commands:memberLeave.errorLabel'),
+          description: Lang.t('general:errors.missingPerms', {
+            permissions: PermissionUtils.bigIntPermOutput(
               requiredPermissions.filter((permission) => !channel.permissionsFor(client.user.id)?.has(permission))
-            )}`,
+            ),
+            channel: channel.toString(),
+          }),
         }),
       );
       return;
@@ -49,8 +52,10 @@ export default new ClientEventListener({
       LoggingServices.adminLog(
         guild,
         client.embeds.error({
-          title: 'Member Leave Message Error',
-          description: `Channel ${channel} is not text-based`,
+          title: Lang.t('commands:memberLeave.errorLabel'),
+          description: Lang.t('general:errors.notTextChannel', {
+            channel: channel.toString(),
+          }),
         }),
       );
       return;
@@ -67,19 +72,22 @@ export default new ClientEventListener({
         name: member.user.username,
         iconURL: member.user.displayAvatarURL({ forceStatic: false }),
       })
-      .setTitle('Member Left')
-      .setDescription(`${member.user} has left ${guild.name}`)
+      .setTitle(Lang.t('commands:memberLeave.label'))
+      .setDescription(Lang.t('commands:memberLeave.goodbye', {
+        user: member.toString(),
+        guild: guild.name,
+      }))
       .setThumbnail(member.user.displayAvatarURL({ forceStatic: false }))
       .addFields({
-        name: 'Account Created',
+        name: Lang.t('general:discord.accountCreated'),
         value: accountCreatedOutput,
         inline: true,
       }, {
-        name: 'Joined At',
+        name: Lang.t('general:discord.joinedAt'),
         value: joinedAtOutput,
         inline: true,
       }, {
-        name: 'Member Count',
+        name: Lang.t('general:discord.memberCount'),
         value: guild.memberCount.toLocaleString(),
         inline: true,
       });
@@ -102,9 +110,8 @@ export default new ClientEventListener({
         LoggingServices.adminLog(
           guild,
           client.embeds.error({
-            title: 'Member Leave Message Error',
-            description: 'An error occurred while sending the member leave message, please try again later,'
-              + ' the developers have been notified of this error',
+            title: Lang.t('commands:memberLeave.errorLabel'),
+            description: Lang.t('general:errors.errAfterPermCheck'),
           }),
         );
       });

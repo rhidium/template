@@ -1,15 +1,21 @@
-import { SlashCommandIntegerOption, SlashCommandStringOption, SlashCommandSubcommandGroupBuilder } from 'discord.js';
+import {
+  SlashCommandIntegerOption,
+  SlashCommandStringOption,
+  SlashCommandSubcommandBuilder,
+  SlashCommandSubcommandGroupBuilder,
+} from 'discord.js';
 import { AvailableEmbedConfiguration, EmbedConfigurationConstants } from './enums';
 import { maxFieldNameLength } from './helpers';
 import { EmbedConstants } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 export const embedOptions = [
   {
-    name: 'Member Join',
+    name: Lang.t('commands:embeds.embedOptions.memberJoin'),
     value: AvailableEmbedConfiguration.MEMBER_JOIN,
   },
   {
-    name: 'Member Leave',
+    name: Lang.t('commands:embeds.embedOptions.memberLeave'),
     value: AvailableEmbedConfiguration.MEMBER_LEAVE,
   },
 ];
@@ -151,3 +157,8 @@ export const manageEmbedFieldsSubcommandGroup = new SlashCommandSubcommandGroupB
         .setRequired(false),
       ),
   );
+
+export const showEmbedSubcommand = new SlashCommandSubcommandBuilder()
+  .setName(EmbedConfigurationConstants.SHOW_SUBCOMMAND_NAME)
+  .setDescription('Display/render the embed')
+  .addIntegerOption(embedCommandOption);

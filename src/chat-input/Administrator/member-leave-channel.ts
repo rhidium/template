@@ -2,22 +2,23 @@ import { guildSettingsFromCache, updateGuildSettings } from '@/database';
 import { LoggingServices } from '@/services';
 import { ChannelType, SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
-const ModLogChannelCommand = new ChatInputCommand({
+const MemberLeaveChannelCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
   isEphemeral: true,
   guildOnly: true,
   data: new SlashCommandBuilder()
-    .setDescription('Set the channel to send moderator log messages to')
+    .setDescription('Set the channel to send member leave messages to')
     .addChannelOption((option) => option
       .setName('channel')
-      .setDescription('The channel to send moderator log messages to')
+      .setDescription('The channel to send member leave messages to')
       .setRequired(false)
       .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement),
     )
     .addBooleanOption((option) => option
       .setName('disable')
-      .setDescription('Disable moderator log messages')
+      .setDescription('Disable member leave messages')
       .setRequired(false),
     ),
   run: async (client, interaction) => {
@@ -28,69 +29,73 @@ const ModLogChannelCommand = new ChatInputCommand({
     const guildAvailable = InteractionUtils.requireAvailableGuild(client, interaction);
     if (!guildAvailable) return;
 
-    await ModLogChannelCommand.deferReplyInternal(interaction);
+    await MemberLeaveChannelCommand.deferReplyInternal(interaction);
 
     const guildSettings = await guildSettingsFromCache(interaction.guildId);
     if (!guildSettings) {
-      ModLogChannelCommand.reply(
+      MemberLeaveChannelCommand.reply(
         interaction,
-        client.embeds.error('Guild settings not found, please try again later'),
+        client.embeds.error(Lang.t('general:settings.notFound')),
       );
       return;
     }
 
     if (disable) {
-      guildSettings.modLogChannelId = null;
+      guildSettings.memberLeaveChannelId = null;
       await updateGuildSettings(guildSettings, {
-        data: { modLogChannelId: null },
+        data: { memberLeaveChannelId: null },
       });
-      ModLogChannelCommand.reply(
+      MemberLeaveChannelCommand.reply(
         interaction,
-        client.embeds.success('Moderator logging disabled'),
+        client.embeds.success(Lang.t('commands:memberLeaveChannel.disabled')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: 'Moderator Logging Disabled',
-          description: `Moderator logging has been disabled by ${interaction.user}`,
+          title: Lang.t('commands:memberLeaveChannel.disabledTitle'),
+          description: Lang.t('commands:memberLeaveChannel.disabledBy', {
+            username: interaction.user.username,
+          }),
         }),
       );
       return;
     }
 
     if (!channel) {
-      ModLogChannelCommand.reply(
+      MemberLeaveChannelCommand.reply(
         interaction,
         client.embeds.branding({
           fields: [{
-            name: 'Moderator Logging Channel',
-            value: guildSettings.modLogChannelId
-              ? `<#${guildSettings.modLogChannelId}>`
-              : 'Not set',
+            name: Lang.t('commands:memberLeaveChannel.title'),
+            value: guildSettings.memberLeaveChannelId
+              ? `<#${guildSettings.memberLeaveChannelId}>`
+              : Lang.t('general:notSet'),
           }],
         })
       );
       return;
     }
 
-    guildSettings.modLogChannelId = channel.id;
+    guildSettings.memberLeaveChannelId = channel.id;
     await updateGuildSettings(guildSettings, {
-      data: { modLogChannelId: channel.id },
+      data: { memberLeaveChannelId: channel.id },
     });
-    ModLogChannelCommand.reply(
+    MemberLeaveChannelCommand.reply(
       interaction,
-      client.embeds.success(`Moderator logging channel set to ${channel}`),
+      client.embeds.success(Lang.t('commands:memberLeaveChannel.changed', {
+        channel: channel.toString(),
+      })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Moderator Logging Channel Changed',
+        title: Lang.t('commands:memberLeaveChannel.changedTitle'),
         fields: [{
-          name: 'Channel',
+          name: Lang.t('general:channel'),
           value: `<#${channel.id}>`,
           inline: true,
         }, {
-          name: 'Member',
+          name: Lang.t('general:member'),
           value: interaction.user.toString(),
           inline: true,
         }],
@@ -100,4 +105,4 @@ const ModLogChannelCommand = new ChatInputCommand({
   },
 });
 
-export default ModLogChannelCommand;
+export default MemberLeaveChannelCommand;

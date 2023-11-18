@@ -1,5 +1,6 @@
 import { AttachmentBuilder, InteractionReplyOptions, escapeCodeBlock } from 'discord.js';
 import { EmbedConstants, MessageContextCommand } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
 const PrintEmbedCommand = new MessageContextCommand({
   run: async (client, interaction) => {
@@ -8,7 +9,7 @@ const PrintEmbedCommand = new MessageContextCommand({
 
     if (!hasEmbeds) { // Might be missing MessageContent scope
       await PrintEmbedCommand.reply(interaction, client.embeds.error(
-        'Message has no embeds to print',
+        Lang.t('commands:printEmbed.noEmbeds'),
       ));
       return;
     }

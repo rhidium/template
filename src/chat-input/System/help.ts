@@ -6,7 +6,9 @@ import {
 } from 'discord.js';
 import { ChatInputCommand, Client, StringUtils } from '@rhidium/core';
 import { appConfig } from '@/config';
+import Lang from '@/i18n/i18n';
 
+/** Note: Not localized for obvious reasons */
 export const helpDescription = async (client: Client) => {
   const commandLink = client.commandManager.commandLink;
   return [
@@ -39,8 +41,7 @@ export const helpDescription = async (client: Client) => {
 
 const HelpCommand = new ChatInputCommand({
   isEphemeral: true,
-  data: new SlashCommandBuilder()
-    .setDescription('Display general information about the bot, and how to use it'),
+  data: new SlashCommandBuilder(),
   run: async (client, interaction) => {
     // Defer our reply internally, uses cmd#deferReply
     await HelpCommand.deferReplyInternal(interaction);
@@ -49,7 +50,9 @@ const HelpCommand = new ChatInputCommand({
     const embed = client.embeds.branding({
       description: await helpDescription(client),
       footer: {
-        text: `Requested by ${interaction.user.tag}`,
+        text: Lang.t('general:requestedBy', {
+          username: interaction.user.username,
+        }),
         iconURL: interaction.user.displayAvatarURL(),
       },
     });

@@ -2,8 +2,9 @@ import { guildSettingsFromCache, updateGuildSettings } from '@/database';
 import { LoggingServices } from '@/services';
 import { SlashCommandBuilder } from 'discord.js';
 import { ChatInputCommand, InteractionUtils, PermLevel } from '@rhidium/core';
+import Lang from '@/i18n/i18n';
 
-const ModRoleCommand = new ChatInputCommand({
+const ModeratorRoleCommand = new ChatInputCommand({
   permLevel: PermLevel.Administrator,
   isEphemeral: true,
   guildOnly: true,
@@ -27,13 +28,13 @@ const ModRoleCommand = new ChatInputCommand({
     const guildAvailable = InteractionUtils.requireAvailableGuild(client, interaction);
     if (!guildAvailable) return;
 
-    await ModRoleCommand.deferReplyInternal(interaction);
+    await ModeratorRoleCommand.deferReplyInternal(interaction);
 
     const guildSettings = await guildSettingsFromCache(interaction.guildId);
     if (!guildSettings) {
-      ModRoleCommand.reply(
+      ModeratorRoleCommand.reply(
         interaction,
-        client.embeds.error('Guild settings not found, please try again later'),
+        client.embeds.error(Lang.t('general:settings.notFound')),
       );
       return;
     }
@@ -43,29 +44,31 @@ const ModRoleCommand = new ChatInputCommand({
       await updateGuildSettings(guildSettings, {
         data: { modRoleId: null },
       });
-      ModRoleCommand.reply(
+      ModeratorRoleCommand.reply(
         interaction,
-        client.embeds.success('Moderator role removed/unset'),
+        client.embeds.success(Lang.t('commands:modRole.removed')),
       );
       LoggingServices.adminLog(
         interaction.guild,
         client.embeds.info({
-          title: 'Moderator Role Removed',
-          description: `The Moderator role has been removed by ${interaction.user}`,
+          title: Lang.t('commands:modRole.removedTitle'),
+          description: Lang.t('commands:modRole.removedBy', {
+            username: interaction.user.username,
+          }),
         }),
       );
       return;
     }
 
     if (!role) {
-      ModRoleCommand.reply(
+      ModeratorRoleCommand.reply(
         interaction,
         client.embeds.branding({
           fields: [{
-            name: 'Moderator Role',
+            name: Lang.t('commands:modRole.title'),
             value: guildSettings.modRoleId
               ? `<@&${guildSettings.modRoleId}>`
-              : 'Not set',
+              : Lang.t('general:notSet'),
           }],
         })
       );
@@ -76,20 +79,22 @@ const ModRoleCommand = new ChatInputCommand({
     await updateGuildSettings(guildSettings, {
       data: { modRoleId: role.id },
     });
-    ModRoleCommand.reply(
+    ModeratorRoleCommand.reply(
       interaction,
-      client.embeds.success(`Moderator role changed to ${role}`),
+      client.embeds.success(Lang.t('commands:modRole.changed', {
+        role: `<@&${role.id}>`,
+      })),
     );
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Moderator Role Changed',
+        title: Lang.t('commands:modRole.changedTitle'),
         fields: [{
-          name: 'Role',
+          name: Lang.t('general:role'),
           value: `<@&${role.id}>`,
           inline: true,
         }, {
-          name: 'Member',
+          name: Lang.t('general:member'),
           value: interaction.user.toString(),
           inline: true,
         }],
@@ -99,4 +104,4 @@ const ModRoleCommand = new ChatInputCommand({
   },
 });
 
-export default ModRoleCommand;
+export default ModeratorRoleCommand;

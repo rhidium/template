@@ -26,8 +26,9 @@ import {
   replacePlaceholders,
   replacePlaceholdersAcrossEmbed,
 } from '@/placeholders';
-import { EmbedConstants, StringUtils, UnitConstants } from '@rhidium/core';
+import { EmbedConstants, InteractionUtils, StringUtils, UnitConstants } from '@rhidium/core';
 import { guildTTLCache, prisma } from '@/database';
+import Lang from '@/i18n/i18n';
 
 const jsonCodeBlockOffset = 12;
 
@@ -81,7 +82,7 @@ export const configureEmbedController: EmbedController = async (
 
   const messageSuffix = resolvedMessage ? `\n\n${resolvedMessage}` : '';
   const msg = await ConfigureEmbedsCommand.reply(interaction, {
-    content: `This is what the embed will look like, do you want to continue?${messageSuffix}`,
+    content: `${Lang.t('commands:embeds.previewPrompt')}${messageSuffix}`,
     embeds: [embed],
     components: [configureEmbedControlRow],
     fetchReply: true,
@@ -90,9 +91,7 @@ export const configureEmbedController: EmbedController = async (
   if (!msg) {
     ConfigureEmbedsCommand.reply(
       interaction,
-      client.embeds.error(
-        'Failed to send embed preview, please try again later',
-      ),
+      client.embeds.error(Lang.t('commands:embeds.previewFailed')),
     );
     return;
   }
@@ -109,23 +108,15 @@ export const configureEmbedController: EmbedController = async (
   } catch {
     ConfigureEmbedsCommand.reply(
       interaction,
-      client.embeds.error('Embed configuration expired'),
+      client.embeds.error(Lang.t('commands:embeds.configurationExpired')),
     );
     return;
   }
 
-  if (i.user.id !== interaction.user.id) {
-    i.reply({
-      content:
-        'You cannot interact with this component as it was created for someone else',
-      ephemeral: true,
-    });
-    return;
-  }
 
   if (i.customId === EmbedConfigurationConstants.CONFIGURE_CANCEL) {
     i.update({
-      content: 'Embed configuration cancelled',
+      content: Lang.t('commands:embeds.configurationCancelled'),
       components: [],
     });
     return;
@@ -133,10 +124,9 @@ export const configureEmbedController: EmbedController = async (
 
   const upsertId = guildSettings[`${settingKey}Id`] ?? null;
   if (upsertId === null) {
+    client.logger.error('Embed configuration failed, setting id reference field couldn\'t be resolved!');
     i.update({
-      content:
-        'Embed configuration failed, settingKey id reference field ' +
-        'couldn\'t be resolved - please try again later',
+      content: Lang.t('commands:embeds.missingUpsertId'),
       components: [],
     });
     return;
@@ -191,9 +181,7 @@ export const configureEmbedController: EmbedController = async (
 
   const newTotalFields = (setting?.fields?.length ?? 0) + fields.length;
   if (newTotalFields > EmbedConstants.MAX_FIELDS_LENGTH) {
-    i.editReply({
-      content: `Embed configuration failed, embed fields length exceeds maximum of ${EmbedConstants.MAX_FIELDS_LENGTH}`,
-    });
+    i.editReply(Lang.t('commands:embeds.maxFieldSize', { max: EmbedConstants.MAX_FIELDS_LENGTH }));
     interaction.editReply({
       components: [configureEmbedAcceptedRow],
     });
@@ -234,9 +222,7 @@ export const configureEmbedController: EmbedController = async (
     include: { fields: true },
   });
 
-  i.editReply({
-    content: 'Embed configuration successful',
-  });
+  i.editReply(Lang.t('commands:embeds.configurationSaved'));
   interaction.editReply({
     components: [configureEmbedAcceptedRow],
   });
@@ -249,20 +235,20 @@ export const configureEmbedController: EmbedController = async (
   LoggingServices.adminLog(
     interaction.guild,
     client.embeds.info({
-      title: 'Embed Configuration Changed',
+      title: Lang.t('commands:embeds.configurationChanged'),
       fields: [
         {
-          name: 'Member',
+          name: Lang.t('general:member'),
           value: interaction.user.toString(),
           inline: true,
         },
         {
-          name: 'Embed',
+          name: Lang.t('general:embed'),
           value: `\`\`\`${humanFriendlySettingKey}\`\`\``,
           inline: true,
         },
         {
-          name: 'Fields',
+          name: Lang.t('general:fields'),
           value: `\`\`\`${newEmbedData.fields?.length ?? 0}\`\`\``,
           inline: true,
         },
@@ -297,9 +283,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     if (!setting) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error(
-          'Embed not configured, nothing to add to - please create the embed first',
-        ),
+        client.embeds.error(Lang.t('commands:embeds.editEmbedMissing')),
       );
       return;
     }
@@ -312,7 +296,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
       ConfigureEmbedsCommand.reply(
         interaction,
         client.embeds.error(
-          `Embed fields length exceeds maximum of ${EmbedConstants.MAX_FIELDS_LENGTH}`,
+          Lang.t('commands:embeds.maxFieldSize', { max: EmbedConstants.MAX_FIELDS_LENGTH }),
         ),
       );
       return;
@@ -349,7 +333,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     const messageSuffix = resolvedMessage ? `\n\n${resolvedMessage}` : '';
 
     ConfigureEmbedsCommand.reply(interaction, {
-      content: `Field added to embed successfully, here is a preview:${messageSuffix}`,
+      content: `${Lang.t('commands:embeds.fieldsEditPreview')}${messageSuffix}`,
       embeds: [embed],
     });
 
@@ -359,20 +343,20 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Embed Field Added',
+        title: Lang.t('commands:embeds.fieldsAdded'),
         fields: [
           {
-            name: 'Member',
+            name: Lang.t('general:member'),
             value: `\`\`\`${interaction.user.username}\`\`\``,
             inline: true,
           },
           {
-            name: 'Embed',
+            name: Lang.t('general:embed'),
             value: `\`\`\`${humanFriendlySettingKey}\`\`\``,
             inline: true,
           },
           {
-            name: 'Field',
+            name: Lang.t('general:field'),
             value: `\`\`\`json\n${jsonOutput}\n\`\`\``,
           },
         ],
@@ -386,9 +370,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     if (!setting) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error(
-          'Embed not configured, nothing to remove from - please create the embed first',
-        ),
+        client.embeds.error(Lang.t('commands:embeds.removeEmbedMissing')),
       );
       return;
     }
@@ -398,7 +380,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
       ConfigureEmbedsCommand.reply(
         interaction,
         client.embeds.error(
-          `Index must be between 1 and ${setting.fields.length}`,
+          Lang.t('commands:embeds.indexOutsideRange', { max: setting.fields.length }),
         ),
       );
       return;
@@ -409,7 +391,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
       ConfigureEmbedsCommand.reply(
         interaction,
         client.embeds.error(
-          `Field at index ${index} not found, provide a valid index between 1 and ${setting.fields.length}`,
+          Lang.t('commands:embeds.indexFieldNotFound', { index, max: setting.fields.length }),
         ),
       );
       return;
@@ -439,7 +421,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
 
 
     ConfigureEmbedsCommand.reply(interaction, {
-      content: `Field removed from embed successfully, here is a preview:${messageSuffix}`,
+      content: `${Lang.t('commands:embeds.fieldRemovedPreview')}${messageSuffix}`,
       embeds: [embed],
     });
 
@@ -449,20 +431,20 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     LoggingServices.adminLog(
       interaction.guild,
       client.embeds.info({
-        title: 'Embed Field Removed',
+        title: Lang.t('commands:embeds.fieldRemoved'),
         fields: [
           {
-            name: 'Member',
+            name: Lang.t('general:member'),
             value: `\`\`\`${interaction.user.username}\`\`\``,
             inline: true,
           },
           {
-            name: 'Embed',
+            name: Lang.t('general:embed'),
             value: `\`\`\`${humanFriendlySettingKey}\`\`\``,
             inline: true,
           },
           {
-            name: 'Field',
+            name: Lang.t('general:field'),
             value: `\`\`\`json\n${jsonOutput}\n\`\`\``,
           },
         ],
@@ -476,69 +458,62 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     if (!setting) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error(
-          'Embed not configured, nothing to reset - please create the embed first',
-        ),
+        client.embeds.error(Lang.t('commands:embeds.fieldsResetEmbedMissing')),
       );
       return;
     }
 
-    const confirm = options.getBoolean('confirm') ?? false;
-    if (!confirm) {
-      ConfigureEmbedsCommand.reply(
-        interaction,
-        client.embeds.error(
-          'Please confirm that you want to reset the embed fields in the command options',
-        ),
-      );
-      return;
-    }
+    InteractionUtils.promptConfirmation({
+      client,
+      interaction,
+      async onConfirm(i) {
+        guildTTLCache.delete(interaction.guildId);
+        const updatedSetting = await prisma.embed.update({
+          where: { id: setting.id },
+          include: { fields: true },
+          data: {
+            fields: { deleteMany: {} },
+          },
+        });
 
-    guildTTLCache.delete(interaction.guildId);
-    const updatedSetting = await prisma.embed.update({
-      where: { id: setting.id },
-      include: { fields: true },
-      data: {
-        fields: { deleteMany: {} },
+        const rawEmbed = embedFromEmbedModel(updatedSetting);
+        const placeholders = buildDiscordPlaceholders(
+          interaction.channel,
+          interaction.guild,
+          interaction.member,
+          interaction.user
+        );
+        const embed = replacePlaceholdersAcrossEmbed(rawEmbed, placeholders);
+        const resolvedMessage = updatedSetting.messageText
+          ? replacePlaceholders(updatedSetting.messageText, placeholders)
+          : null;
+        const messageSuffix = resolvedMessage ? `\n\n${resolvedMessage}` : '';
+
+        InteractionUtils.replyDynamic(client, i, {
+          content: `${Lang.t('commands:embeds.fieldsResetSuccess')}${messageSuffix}`,
+          embeds: [embed],
+        });
+
+        LoggingServices.adminLog(
+          interaction.guild,
+          client.embeds.info({
+            title: Lang.t('commands:embeds.fieldsReset'),
+            fields: [
+              {
+                name: Lang.t('general:member'),
+                value: `\`\`\`${interaction.user.username}\`\`\``,
+                inline: true,
+              },
+              {
+                name: Lang.t('general:embed'),
+                value: `\`\`\`${humanFriendlySettingKey}\`\`\``,
+                inline: true,
+              },
+            ],
+          }),
+        ); 
       },
     });
-
-    const rawEmbed = embedFromEmbedModel(updatedSetting);
-    const placeholders = buildDiscordPlaceholders(
-      interaction.channel,
-      interaction.guild,
-      interaction.member,
-      interaction.user
-    );
-    const embed = replacePlaceholdersAcrossEmbed(rawEmbed, placeholders);
-    const resolvedMessage = updatedSetting.messageText
-      ? replacePlaceholders(updatedSetting.messageText, placeholders)
-      : null;
-    const messageSuffix = resolvedMessage ? `\n\n${resolvedMessage}` : '';
-
-    ConfigureEmbedsCommand.reply(interaction, {
-      content: `Fields reset successfully, here is a preview:${messageSuffix}`,
-      embeds: [embed],
-    });
-
-    LoggingServices.adminLog(
-      interaction.guild,
-      client.embeds.info({
-        title: 'Embed Fields Reset',
-        fields: [
-          {
-            name: 'Member',
-            value: `\`\`\`${interaction.user.username}\`\`\``,
-            inline: true,
-          },
-          {
-            name: 'Embed',
-            value: `\`\`\`${humanFriendlySettingKey}\`\`\``,
-            inline: true,
-          },
-        ],
-      }),
-    );
 
     break;
   }
@@ -548,7 +523,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     if (!setting) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error('Embed not configured, nothing to show'),
+        client.embeds.error(Lang.t('commands:embeds.fieldsListEmbedMissing')),
       );
       return;
     }
@@ -556,7 +531,7 @@ export const manageEmbedFieldsController: EmbedFieldController = async (
     if (setting.fields.length === 0) {
       ConfigureEmbedsCommand.reply(
         interaction,
-        client.embeds.error('Embed has no fields, nothing to show'),
+        client.embeds.error(Lang.t('commands:embeds.fieldsListEmpty')),
       );
       return;
     }
