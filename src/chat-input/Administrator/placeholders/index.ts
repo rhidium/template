@@ -31,6 +31,7 @@ const PlaceholdersCommand = new ChatInputCommand({
           user: 'user',
           username: interaction.member.user.username,
           command: manageEmbedCommand,
+          interpolation: { escapeValue: false },
         })),
         fields: [{
           name: Lang.t('commands:placeholders.placeholderGroups'),
