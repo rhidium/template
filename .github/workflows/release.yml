@@ -17,13 +17,13 @@ jobs:
           node-version: 18
       - run: npm install
       - run: |
-        npm i -D semantic-release \
-          @semantic-release/changelog \
-          @semantic-release/commit-analyzer \
-          @semantic-release/git \
-          @semantic-release/github \
-          @semantic-release/npm \
-          @semantic-release/release-notes-generator
+          npm i -D semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/commit-analyzer \
+            @semantic-release/git \
+            @semantic-release/github \
+            @semantic-release/npm \
+            @semantic-release/release-notes-generator
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
