@@ -165,18 +165,42 @@ export const configureEmbedController: EmbedController = async (
     fields?: { create: EmbedField[] };
   } = {};
 
-  if (rawEmbed.data.color) upsertData.color = rawEmbed.data.color;
-  upsertData.messageText = configureEmbedMessage ?? null;
-  upsertData.authorName = rawEmbed.data.author?.name ?? null;
-  upsertData.authorIconURL = rawEmbed.data.author?.icon_url ?? null;
-  upsertData.authorURL = rawEmbed.data.author?.url ?? null;
-  upsertData.title = rawEmbed.data.title ?? null;
-  upsertData.description = rawEmbed.data.description ?? null;
-  upsertData.url = rawEmbed.data.url ?? null;
-  upsertData.imageURL = rawEmbed.data.image?.url ?? null;
-  upsertData.thumbnailURL = rawEmbed.data.thumbnail?.url ?? null;
-  upsertData.footerText = rawEmbed.data.footer?.text ?? null;
-  upsertData.footerIconURL = rawEmbed.data.footer?.icon_url ?? null;
+  if (options.getString('color') || rawEmbed.data.color) upsertData.color = configureEmbedData.color
+    ? resolveColor(`#${configureEmbedData.color.replaceAll('#', '')}`)
+    : null;
+  if (options.getString('message') || configureEmbedMessage === null) {
+    upsertData.messageText = configureEmbedMessage ?? null;
+  }
+  if (options.getString('author-name') || configureEmbedData.authorName === null) {
+    upsertData.authorName = configureEmbedData.authorName ?? null;
+  }
+  if (options.getString('author-icon-url') || configureEmbedData.authorIconUrl === null) {
+    upsertData.authorIconURL = configureEmbedData.authorIconUrl ?? null;
+  }
+  if (options.getString('author-url') || configureEmbedData.authorUrl === null) {
+    upsertData.authorURL = configureEmbedData.authorUrl ?? null;
+  }
+  if (options.getString('title') || configureEmbedData.title === null) {
+    upsertData.title = configureEmbedData.title ?? null;
+  }
+  if (options.getString('description') || configureEmbedData.description === null) {
+    upsertData.description = configureEmbedData.description ?? null;
+  }
+  if (options.getString('url') || configureEmbedData.url === null) {
+    upsertData.url = configureEmbedData.url ?? null;
+  }
+  if (options.getString('image-url') || configureEmbedData.imageUrl === null) {
+    upsertData.imageURL = configureEmbedData.imageUrl ?? null;
+  }
+  if (options.getString('thumbnail-url') || configureEmbedData.thumbnailUrl === null) {
+    upsertData.thumbnailURL = configureEmbedData.thumbnailUrl ?? null;
+  }
+  if (options.getString('footer-text') || configureEmbedData.footerText === null) {
+    upsertData.footerText = configureEmbedData.footerText ?? null;
+  }
+  if (options.getString('footer-icon-url') || configureEmbedData.footerIconUrl === null) {
+    upsertData.footerIconURL = configureEmbedData.footerIconUrl ?? null;
+  }
   if (fields.length > 0) upsertData.fields = { create: fields };
 
   const newTotalFields = (setting?.fields?.length ?? 0) + fields.length;
@@ -222,9 +246,11 @@ export const configureEmbedController: EmbedController = async (
     include: { fields: true },
   });
 
-  i.editReply(Lang.t('commands:embeds.configurationSaved'));
+  i.deleteReply();
   interaction.editReply({
+    content: `${Lang.t('commands:embeds.configurationSaved')}${messageSuffix}`,
     components: [configureEmbedAcceptedRow],
+    allowedMentions: { parse: [] },
   });
 
   const newEmbedData = msg.embeds[0];
