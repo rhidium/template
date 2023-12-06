@@ -88,10 +88,10 @@ export const resolveConfigureEmbedData = (
   else if (resolvedData.authorName) {
     const author: {
       name: string;
-      icon_url?: string;
+      iconURL?: string;
       url?: string;
     } = { name: resolvedData.authorName };
-    if (resolvedData.authorIconUrl) author.icon_url = resolvedData.authorIconUrl;
+    if (resolvedData.authorIconUrl) author.iconURL = resolvedData.authorIconUrl;
     if (resolvedData.authorUrl) author.url = resolvedData.authorUrl;
     embed.setAuthor(author);
   }
@@ -100,9 +100,9 @@ export const resolveConfigureEmbedData = (
   else if (resolvedData.footerText) {
     const footer: {
       text: string;
-      icon_url?: string;
+      iconURL?: string;
     } = { text: resolvedData.footerText };
-    if (resolvedData.footerIconUrl) footer.icon_url = resolvedData.footerIconUrl;
+    if (resolvedData.footerIconUrl) footer.iconURL = resolvedData.footerIconUrl;
     embed.setFooter(footer);
   }
 
