@@ -17,7 +17,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: |
-          npm i -D semantic-release \
+          npm i -D --no-save semantic-release \
             @semantic-release/changelog \
             @semantic-release/commit-analyzer \
             @semantic-release/git \
