@@ -55,7 +55,7 @@ export const main = async () => {
   });
 
   // Let's initialize the library language localization
-  initializeLocalization(appConfig.debug.localizations);
+  initializeLocalization(Lang);
 
   // Initialize our cluster if we're using one
   if (appConfig.cluster.enabled) client.cluster = new ClusterClient(client);
