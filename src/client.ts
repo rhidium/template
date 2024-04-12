@@ -76,6 +76,14 @@ export const main = async () => {
     },
   ]);
 
+  // Log debug and warning messages
+  if (appConfig.debug.debug_mode_enabled) {
+    client
+      .on('debug', console.debug)
+      .on('warn', console.warn);
+    client.rest.on('rateLimited', (d) => console.warn(d));
+  }
+
   // Initialize our cluster if we're using one
   if (appConfig.cluster.enabled) client.cluster = new ClusterClient(client);
 
