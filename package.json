@@ -14,7 +14,7 @@
 		"setup:windows": "npm install && copy .env.example .env && copy config.example.json config.json",
 		"generate-schema": "npx ts-json-schema-generator --path 'src/config/*.ts' --type 'UserConfigOptions' --tsconfig tsconfig.json",
 		"update-schema": "node scripts/create-config-schema.mjs",
-		"preconfig-editor": "npm run update-schema",
+		"preconfig-editor": "npm update-schema",
 		"config-editor": "node scripts/config-editor.mjs",
 		"setup:config": "npm i @rhidium/json-editor && npm run config-editor",
 		"clean:dist": "rimraf ./dist",
@@ -34,36 +34,59 @@
 		"lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
 		"commit": "cz",
 		"prepare": "husky install",
-		"type-check": "tsc --noEmit"
+		"type-check": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev"
 	},
+	"keywords": [
+		"discord",
+		"template",
+		"bot-template",
+		"node",
+		"discordapp",
+		"typescript",
+		"rhidium",
+		"framework",
+		"discord.js"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/rhidium/template.git"
+	},
+	"bugs": {
+		"url": "https://github.com/rhidium/template/issues"
+	},
+	"homepage": "https://rhidium.xyz",
 	"dependencies": {
-		"@prisma/client": "^5.4.1",
+		"@prisma/client": "^5.12.1",
 		"@rhidium/core": "^1.6.1",
 		"common-tags": "^1.8.2",
-		"discord-api-types": "^0.37.63",
-		"discord-hybrid-sharding": "^2.1.4",
+		"discord-api-types": "^0.37.79",
+		"discord-hybrid-sharding": "^2.1.9",
 		"discord.js": "^14.14.1",
 		"i18next": "23.6.0",
 		"module-alias": "^2.2.3"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^17.7.1",
-		"@commitlint/config-conventional": "^17.7.0",
-		"@types/common-tags": "^1.8.1",
-		"@types/express": "^4.17.18",
-		"@types/module-alias": "^2.0.2",
-		"@types/node": "^18.18.3",
-		"@typescript-eslint/eslint-plugin": "^6.7.5",
-		"@typescript-eslint/parser": "^6.7.5",
+		"@commitlint/cli": "^17.8.1",
+		"@commitlint/config-conventional": "^17.8.1",
+		"@types/common-tags": "^1.8.4",
+		"@types/express": "^4.17.21",
+		"@types/module-alias": "^2.0.4",
+		"@types/node": "^18.19.31",
+		"@typescript-eslint/eslint-plugin": "^6.21.0",
+		"@typescript-eslint/parser": "^6.21.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"eslint": "^8.51.0",
+		"eslint": "^8.57.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^14.0.1",
-		"prisma": "^5.4.1",
-		"rimraf": "^5.0.1",
-		"ts-json-schema-generator": "^1.4.0",
+		"prisma": "^5.12.1",
+		"rimraf": "^5.0.5",
+		"ts-json-schema-generator": "^1.5.1",
 		"ts-node-dev": "^2.0.0",
-		"typescript": "^5.2.2"
+		"tslib": "^2.6.2",
+		"typescript": "^5.4.5"
 	},
 	"config": {
 		"commitizen": {
@@ -74,5 +97,9 @@
 		"src/**/*.{js,jsx,ts,tsx,json}": [
 			"eslint --fix"
 		]
-	}
+	},
+	"engines": {
+		"node": ">=18"
+	},
+	"packageManager": "pnpm@8.10.2"
 }

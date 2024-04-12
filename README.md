@@ -76,9 +76,9 @@ The MongoDB adapter can chosen to minimize required setup for this project. Conv
 
 The full configuration for this project can be found [here](./config.example.json).
 
-- `npm run config-editor` - starts the configuration editor, edit [the script](./scripts/config-editor.mjs) if needed
-- `npm run update-schema` - generate a new JSON Schema, `config-editor` automatically does this
-- `npm run generate-schema` - CLI alternative to `update-schema`, included for completeness
+- `pnpm config-editor` - starts the configuration editor, edit [the script](./scripts/config-editor.mjs) if needed
+- `pnpm update-schema` - generate a new JSON Schema, `config-editor` automatically does this
+- `pnpm generate-schema` - CLI alternative to `update-schema`, included for completeness
 
 The `.env` file is not required, but overwrites by developers in these files are still respected. For example, you can run the production build with sharding and clustering in development mode by setting `NODE_ENV` in `.env`
 
@@ -95,11 +95,11 @@ Are you familiar with Docker? If so, you can use the `docker-compose.yml` or `Do
 ### Setup Instructions
 
 - Download the [latest release](<https://github.com/rhidium/template/releases`>) or `git clone git@github.com:rhidium/template.git` the repo
-- Run `npm run setup:linux` or `npm run setup:windows` in the newly created folder
+- Run `pnpm setup:linux` or `pnpm setup:windows` in the newly created folder
 - Edit the newly created `config.json` file and provide your configuration
-  - Alternatively, use `npm run setup:config` if you prefer a web-based editor
+  - Alternatively, use `pnpm setup:config` if you prefer a web-based editor
   - Hit `ctrl+c` to stop the application once you've clicked "Save"
-- Start the application: `npm run start`
+- Start the application: `pnpm start`
 
 ## Scripts
 

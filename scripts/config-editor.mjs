@@ -6,7 +6,7 @@ import { readFileSync } from 'fs';
     jsonEditor = await import('@rhidium/json-editor');
   }
   catch {
-    console.error('Please install @rhidium/json-editor: "npm i -D @rhidium/json-editor"');
+    console.error('Please install @rhidium/json-editor: "pnpm add -D @rhidium/json-editor"');
     process.exit(1);
   }
 

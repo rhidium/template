@@ -7,7 +7,7 @@
 			"name": "Launch Program",
 			"skipFiles": ["<node_internals>/**", "node_modules/**"],
       "program": "${workspaceFolder}/dist/src/index.js",
-			"preLaunchTask": "npm: build",
+      "preLaunchTask": "pnpm: build",
 			"console": "integratedTerminal"
 		},
 		{
@@ -24,7 +24,7 @@
 				"${workspaceFolder}/dist/test/**/*.js"
 			],
 			"internalConsoleOptions": "openOnSessionStart",
-			"preLaunchTask": "npm: build"
+      "preLaunchTask": "pnpm: build"
 		}
 	]
 }

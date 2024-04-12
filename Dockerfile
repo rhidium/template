@@ -1,7 +1,5 @@
-FROM node:21-alpine
+FROM node:21-alpine AS builder
 
-# Create app/working/bot directory
-RUN mkdir -p /app
 WORKDIR /app
 
 # Install app production dependencies

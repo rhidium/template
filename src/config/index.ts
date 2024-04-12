@@ -10,7 +10,7 @@ if (!configFileExists) {
   logger._warn([
     'config.json does not exist, did you forget to create it?',
     'You can use our web-based editor to create a new one',
-    'and configure it: `npm run config-editor` - falling back',
+    'and configure it: `pnpm config-editor` - falling back',
     'to config.example.json - this will NOT start your bot!',
   ].join(' '));
 }
