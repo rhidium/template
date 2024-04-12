@@ -1,23 +1,25 @@
 generator client {
   provider = "prisma-client-js"
-  // Docker image for the generator binary
-  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  // Note: You will need to declare a binary target for the Prisma Client
+  // when you deploy to Docker, Vercel, AWS Lambda, Google Cloud Functions, Azure Functions,
+  // or similar
+  // binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String @id @unique
   userId  String @unique
-  guildId String @db.ObjectId
+  guildId String
   guild   Guild  @relation(fields: [guildId], references: [id])
 }
 
 model Guild {
-  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  id      String @id @unique
   guildId String @unique
   Users   User[]
 
@@ -30,15 +32,15 @@ model Guild {
 
   memberJoinChannelId String?
   memberJoinEmbed     Embed?  @relation("MemberJoinEmbed", fields: [memberJoinEmbedId], references: [id])
-  memberJoinEmbedId   String? @db.ObjectId
+  memberJoinEmbedId   Int?
 
   memberLeaveChannelId String?
   memberLeaveEmbed     Embed?  @relation("MemberLeaveEmbed", fields: [memberLeaveEmbedId], references: [id])
-  memberLeaveEmbedId   String? @db.ObjectId
+  memberLeaveEmbedId   Int?
 }
 
 model CommandCooldown {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  id         Int     @id @default(autoincrement())
   cooldownId String     @unique
   duration   Int
   usages     DateTime[]
@@ -46,7 +48,7 @@ model CommandCooldown {
 
 // Configurable Messages for users
 model Embed {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  id            Int    @id @default(autoincrement())
   messageText   String?
   color         Int?
   authorName    String?
@@ -66,16 +68,16 @@ model Embed {
 }
 
 model EmbedField {
-  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  id      String  @id @unique
   name    String
   value   String
   inline  Boolean
   Embed   Embed?  @relation(fields: [embedId], references: [id])
-  embedId String? @db.ObjectId
+  embedId Int?
 }
 
 model CommandStatistics {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  id String @id @unique
   type      Int
   commandId String @unique
 

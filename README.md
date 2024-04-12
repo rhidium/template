@@ -37,7 +37,7 @@ This template focuses on simplicity and robustness for developers. The primary e
 
 - Check out the [API Reference](https://rhidium.xyz/)
 - Made with [TypeScript](https://www.typescriptlang.org/) and [discord.js](https://discord.js.org/)
-- [PM2](https://pm2.io/), [Docker](https://www.docker.com/), [docker-compose](https://docs.docker.com/compose/) configurations provided
+- [PM2](https://pm2.io/), [Docker](https://www.docker.com/), [docker compose](https://docs.docker.com/compose/) configurations provided
 
 ### Functionality
 
@@ -59,13 +59,18 @@ This template grows with you and your bot. Opt-in to sharding & clustering (`x` 
 
 ## Database
 
-This TypeScript project uses [Prisma](https://www.prisma.io/docs/getting-started/quickstart) TypeORM with `mongodb` adapter. The MongoDB adapter was chosen to minimize required setup for this project. Converting to SQL adapters should (mostly) only include removing the `_id` `@map`'ing and removing `@db.ObjectId` for `@id`'s (an up-to-date sql schema file is included for your convenience).
+This TypeScript project uses [Prisma](https://www.prisma.io/docs/getting-started/quickstart) TypeORM with `postgresql` adapter.
 
-Available adapters: `cockroachdb`, `mongodb`, `mysql`, `postgresql`, `sqlite`, and `sqliteserver`
+Available adapters: `cockroachdb`, `mongodb`, `postgresql`
 
 - If you make changes to the schema, use the `prisma db push` command to push the new schema state to the database.
 - If you want to use an existing database (pull the schema from existing database), use the `prisma db pull` command.
 - Use `prisma migrate dev` to create migrations, apply them to the database, and generate artifacts (e.g. Prisma Client)
+- When using CockroachDB, the `autoincrement()` default function is defined only on BigInt fields. Change `autoincrement()` to `sequence()` if you want an autoincrementing Int field.
+
+### Mongo
+
+The MongoDB adapter can chosen to minimize required setup for this project. Converting to Mongo adapters should (mostly) only include adding `_id` `@map`'ing and adding `@db.ObjectId` for `@id`'s (an up-to-date [mongo schema file](./prisma/schema.mongo.prisma) is included for your convenience). Do note, Prisma migrations aren't supported for the MongoDB adapter.
 
 ## Configuration
 

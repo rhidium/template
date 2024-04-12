@@ -1,21 +1,25 @@
 generator client {
   provider = "prisma-client-js"
+  // Note: You will need to declare a binary target for the Prisma Client
+  // when you deploy to Docker, Vercel, AWS Lambda, Google Cloud Functions, Azure Functions,
+  // or similar
+  // binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id      String @id @unique
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
   userId  String @unique
-  guildId String
+  guildId String @db.ObjectId
   guild   Guild  @relation(fields: [guildId], references: [id])
 }
 
 model Guild {
-  id      String @id @unique
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
   guildId String @unique
   Users   User[]
 
@@ -28,15 +32,15 @@ model Guild {
 
   memberJoinChannelId String?
   memberJoinEmbed     Embed?  @relation("MemberJoinEmbed", fields: [memberJoinEmbedId], references: [id])
-  memberJoinEmbedId   String?
+  memberJoinEmbedId   String? @db.ObjectId
 
   memberLeaveChannelId String?
   memberLeaveEmbed     Embed?  @relation("MemberLeaveEmbed", fields: [memberLeaveEmbedId], references: [id])
-  memberLeaveEmbedId   String?
+  memberLeaveEmbedId   String? @db.ObjectId
 }
 
 model CommandCooldown {
-  id         String     @id @unique
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
   cooldownId String     @unique
   duration   Int
   usages     DateTime[]
@@ -44,7 +48,7 @@ model CommandCooldown {
 
 // Configurable Messages for users
 model Embed {
-  id            String       @id @unique
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
   messageText   String?
   color         Int?
   authorName    String?
@@ -64,16 +68,16 @@ model Embed {
 }
 
 model EmbedField {
-  id      String  @id @unique
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
   name    String
   value   String
   inline  Boolean
   Embed   Embed?  @relation(fields: [embedId], references: [id])
-  embedId String?
+  embedId String? @db.ObjectId
 }
 
 model CommandStatistics {
-  id String @id @unique
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
   type      Int
   commandId String @unique
 
