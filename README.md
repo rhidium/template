@@ -101,4 +101,41 @@ Are you familiar with Docker? If so, you can use the `docker-compose.yml` or `Do
   - Hit `ctrl+c` to stop the application once you've clicked "Save"
 - Start the application: `npm run start`
 
+## Scripts
+
+Here's some example scripts to get you started with your favorite runtime:
+
+> Please note, you should run these from the **directory root**
+
+### [PM2](https://pm2.io/)
+
+```bash
+pm2 start
+pm2 stop
+pm2 restart
+pm2 reset
+pm2 delete
+```
+
+### [Docker](https://www.docker.com/)
+
+```bash
+# Build
+docker build --tag rhidium-template .
+# Start
+docker run -it -p 3000:3000 --env-file ./.env -d --name my-discord-bot rhidium-template
+# Logs
+docker logs my-discord-bot -f
+# Stop
+docker stop my-discord-bot
+# Restart
+docker restart my-discord-bot
+# Kill
+docker rm -f my-discord-bot
+# Purge
+docker rm -fv my-discord-bot
+# Shell
+docker run -it --rm my-discord-bot sh
+```
+
 > Forever Free, open-source, and ISC licensed, meaning you're in full control
