@@ -14,6 +14,13 @@ datasource db {
 model User {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   userId  String @unique
+  members Member[]
+}
+
+model Member {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String
+  user    User   @relation(fields: [userId], references: [userId])
   guildId String @db.ObjectId
   guild   Guild  @relation(fields: [guildId], references: [id])
 }
@@ -21,7 +28,7 @@ model User {
 model Guild {
   id      String @id @default(auto()) @map("_id") @db.ObjectId
   guildId String @unique
-  Users   User[]
+  Members   Member[]
 
   adminRoleId       String?
   adminLogChannelId String?
@@ -47,6 +54,7 @@ model CommandCooldown {
 }
 
 // Configurable Messages for users
+// Check out the join/leave feed for an example
 model Embed {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   messageText   String?

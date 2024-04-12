@@ -13,7 +13,13 @@ datasource db {
 
 model User {
   id      String @id @unique
-  userId  String @unique
+  members Member[]
+}
+
+model Member {
+  id      String @id @unique
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
   guildId String
   guild   Guild  @relation(fields: [guildId], references: [id])
 }
@@ -21,7 +27,7 @@ model User {
 model Guild {
   id      String @id @unique
   guildId String @unique
-  Users   User[]
+  Members   Member[]
 
   adminRoleId       String?
   adminLogChannelId String?
@@ -47,6 +53,7 @@ model CommandCooldown {
 }
 
 // Configurable Messages for users
+// Check out the join/leave feed for an example
 model Embed {
   id            Int    @id @default(autoincrement())
   messageText   String?
