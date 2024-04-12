@@ -6,8 +6,6 @@ import { logger } from '@rhidium/core';
 /**
  * Validates the resolved `appConfig`, warning users when
  * necessary, and existing if we can't operate due to bad configuration
- *
- * [DEV] - Implement other non-type validation here
  */
 export const validateConfig = (appConfig: AppConfig) => {
   if (appConfig.api.port !== null) {

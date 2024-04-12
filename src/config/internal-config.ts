@@ -52,6 +52,7 @@ export const resolveAppConfig = (userConfig: UserConfigOptions): AppConfig => {
     // Resolve our NODE_ENV from cli arguments and .env files
     // for reference in config files
     NODE_ENV: resolveNodeEnvironment(userConfig),
+    DRY_RUN: process.env.DRY_RUN === 'true',
     // Set defaults for any optional/missing values
     debug: {
       debug_mode_enabled: userConfig.debug?.debug_mode_enabled ?? false,

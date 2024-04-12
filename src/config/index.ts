@@ -4,15 +4,18 @@ import { logger } from '@rhidium/core';
 
 const configFileExists = existsSync('./config/config.json');
 
-// [DEV] - Consider cli argument to force config.example.json
-// to be used instead of config.json for Docker builds etc.
-if (!configFileExists) {
+if (
+  !configFileExists
+  && process.env.CI !== 'true'
+  && process.env.DRY_RUN !== 'true'
+) {
   logger._warn([
     './config/config.json does not exist, did you forget to create it?',
     'You can use our web-based editor to create a new one',
-    'and configure it: `pnpm config-editor` - falling back',
-    'to ./config/config.example.json - this will NOT start your bot!',
+    'and configure it: `pnpm config-editor` - you can build',
+    'your bot in DRY_RUN mode without needing a config file.',
   ].join(' '));
+  process.exit(1);
 }
 
 const configData = configFileExists

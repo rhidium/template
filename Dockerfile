@@ -1,19 +1,37 @@
-FROM node:21-alpine AS builder
-
+FROM node:20-slim AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+COPY . /app
 WORKDIR /app
 
-# Install app production dependencies
-# A wildcard is used to ensure both package.json AND package-lock.json are copied
-# where available (npm@5+)
-COPY package*.json ./
-RUN npm ci
+# OpenSSL is required for Prisma to work
+RUN apt-get update -y && apt-get install -y openssl
 
-# Bundle app source
-COPY . ./
+# Set the CI environment variable to make the build stage omit husky hooks
+ENV CI=true
 
-# Build the project
-RUN npx prisma generate
-RUN npm run build
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
-# Run the start command
-CMD [ "npm", "start" ]
+FROM base AS build
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+RUN pnpm db:generate
+RUN pnpm run build
+
+FROM base
+COPY --from=prod-deps /app/node_modules /app/node_modules
+COPY --from=build /app/dist /app/dist
+# Note: The index file here (
+# /app/node_modules/@prisma/client  
+# ) imports .primsa/client - which is not present in the node_modules
+# COPY --from=build /app/node_modules/@prisma/client /app/node_modules/@prisma/client
+
+# Note: The COPY command above incomplete, for now we will install prisma
+# in the final image, run the db:generate command and then ~~remove it again~~
+# Edit: Yeah no, removing prisma breaks it - even though the generated client is still there
+RUN pnpm i -D prisma
+RUN pnpm db:generate
+
+EXPOSE 9000
+CMD [ "pnpm", "start" ]

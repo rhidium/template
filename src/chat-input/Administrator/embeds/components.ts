@@ -1,6 +1,6 @@
 import { ButtonStyle, SlashCommandSubcommandBuilder } from 'discord.js';
 import { configureEmbedOptions, embedCommandOption } from './options';
-import { ActionRowBuilder, ButtonBuilder } from '@discordjs/builders';
+import { ActionRowBuilder, ButtonBuilder } from 'discord.js';
 import { EmbedConfigurationConstants } from './enums';
 import Lang from '@/i18n/i18n';
 

@@ -9,10 +9,11 @@ import {
   GlobalMiddlewareOptions,
   logger,
   initializeLocalization,
+  CommandCooldownType,
 } from '@rhidium/core';
 
-import libEnglish from '../locales/lib/en.json';
-import libDutch from '../locales/lib/nl.json';
+import libEnglish from '../locales/en/lib.json';
+import libDutch from '../locales/nl/lib.json';
 
 import { permConfig } from './permissions';
 import { appConfig } from './config';
@@ -41,23 +42,39 @@ export const main = async () => {
   // It looks like a lot boilerplate, but we only have few
   // required options and can opt-into a lot of powerful features
   const client = new Client({
-    suppressVanity: false,
     globalMiddleware,
+    suppressVanity: false,
+    // For anyone wondering, there's nothing wrong with storing
+    // the token in a config file outside of the .env file,
+    // as long as the file is not committed to a public repository
+    // or included in build artifacts (like Docker images)
     token: appConfig.client.token,
     intents: [GatewayIntentBits.Guilds],
     extensions: clientExtensions,
     applicationId: appConfig.client.id,
     errorChannelId: appConfig.client.error_channel_id ?? null,
+    defaultLockMemberPermissions: appConfig.permissions.default_lock_member_permissions,
+    refuseUnknownCommandInteractions: appConfig.client.refuse_unknown_command_interactions ?? false,
+    suppressUnknownInteractionWarning: appConfig.client.suppress_unknown_interaction_warnings ?? false,
     commandUsageChannelId: appConfig.client.command_usage_channel_id ?? null,
     developmentServerId: appConfig.client.development_server_id,
     shards: appConfig.cluster.enabled ? getInfo()?.SHARD_LIST ?? 'auto' : 'auto',
     shardCount: appConfig.cluster.enabled ? getInfo()?.TOTAL_SHARDS ?? 1 : 1,
+    defaultCommandThrottling: {
+      duration: appConfig.cooldown.default_cooldown_duration,
+      enabled: appConfig.cooldown.default_cooldown_enabled,
+      persistent: appConfig.cooldown.default_cooldown_persistent,
+      type: appConfig.cooldown.default_cooldown_type
+        ? CommandCooldownType[appConfig.cooldown.default_cooldown_type]
+        : CommandCooldownType.User,
+      usages: appConfig.cooldown.default_cooldown_usages,
+    },
     internalPermissions: clientPermissions!,
-    debug: clientDebugging!,
     directories: clientDirectories!,
     logging: clientLoggingConfig!,
     colors: appConfig.colors,
     emojis: appConfig.emojis,
+    debug: clientDebugging!,
     I18N: Lang,
     locales,
     pkg,

@@ -8,28 +8,38 @@
     <a href="https://www.npmjs.com/package/@rhidium/core"><img src="https://img.shields.io/npm/v/@rhidium/core.svg?maxAge=3600" alt="npm version" /></a>
     <a href="https://www.npmjs.com/package/@rhidium/core"><img src="https://img.shields.io/npm/dt/@rhidium/core.svg?maxAge=3600" alt="npm downloads" /></a>
   </p>
+
+  <p align="center">
+    <a href="https://github.com/rhidium/core">Core</a>
+    •
+    <a href="https://github.com/rhidium/template">Template</a>
+    •
+    <a href="https://github.com/rhidium/json-editor">JSON Editor</a>
+    •
+    <a href="https://github.com/rhidium/core">Placeholder</a>
+  </p>
 </div>
 
 # @rhidium/template
 
-This is a Discord bot template that fully utilizes the [rhidium framework](https://rhidium.xyz). From essential system related commands to detailed command usage/statistics and integrated re-usable embed and placeholder functionality - this template aims to provide everything you need to develop powerful, scalable Discord bots fast and efficiently.
+This is a Discord bot template that fully utilizes the [rhidium framework](https://rhidium.xyz). From essential system related commands to detailed command usage/statistics and re-usable embed and placeholder integrations - this template aims to provide everything you need to develop powerful, scalable Discord bots fast and efficiently.
 
 > With Rhidium, you can focus on what's really important: **Creating meaningful features**
 
-Excited to begin? [Get started!](#installation)
+Excited to begin? [Get started!](#-installation) or try [the demo](#-support)
 
-## Features (non-exhaustive)
+## 🤩 Features (non-exhaustive)
 
-We've compromised a list a list of
+We've compromised a list of some of the core functionality provided by Rhidium:
 
 - Powerful, dynamic [middleware](https://rhidium.xyz/classes/Middleware.CommandMiddleware.html) system
 - Type-safe, re-usable [controllers](https://rhidium.xyz/modules/Commands.Controllers.html)
 - Dynamic [Component](https://rhidium.xyz/modules/Commands.html) Handlers/File-Loaders
 - Synchronized local & API commands, automatic refreshes
-- Fully localized, convenience localization for commands
+- Fully localized (through [i18next](https://www.npmjs.com/package/i18next)), convenience localization for commands
 - Colorful console logging & verbose, organized file logging
-- Wide range of everyday utilities
-- CRON and interval jobs
+- Wide range of everyday utilities and functionality
+- [CRON](https://crontab.guru/) and interval-based jobs
 
 ### Developer Friendly
 
@@ -47,8 +57,8 @@ This template focuses on simplicity and robustness for developers. The primary e
 - Discord logging for errors, guild join/leave etc.
 - Administrator and Moderator permission level roles and channels
 - Member Join messages, uses both Embed and Placeholder functionality as a complete integration
-- Developer utility commands
-- User information commands
+- User information, and developer utility commands
+- And so much more...
 
 ### Scaling
 
@@ -57,7 +67,11 @@ This template grows with you and your bot. Opt-in to sharding & clustering (`x` 
 - Supports [sharding](https://discordjs.guide/sharding), which is required when your bot reaches 2500+ servers
 - Supports [clustering](https://www.npmjs.com/package/discord-hybrid-sharding), which allows you to seamlessly run your bot over multiple processes
 
-## Database
+### RESTful API (coming soon)
+
+This template comes with a REST API (OpenAPI spec 3.0.0). By default, this only serves the client's command data, which can be used to easily fetch your command data and build a dynamic command table/overview on your project's website. You can easily extend, and build upon this API yourself. Visit the `api` section in the `/config/config.json` file to get started.
+
+## 💽 Database
 
 This TypeScript project uses [Prisma](https://www.prisma.io/docs/getting-started/quickstart) TypeORM with `postgresql` adapter.
 
@@ -70,40 +84,103 @@ Available adapters: `cockroachdb`, `mongodb`, `postgresql`
 
 ### Mongo
 
-The MongoDB adapter can chosen to minimize required setup for this project. Converting to Mongo adapters should (mostly) only include adding `_id` `@map`'ing and adding `@db.ObjectId` for `@id`'s (an up-to-date [mongo schema file](./prisma/schema.mongo.prisma) is included for your convenience). Do note, Prisma migrations aren't supported for the MongoDB adapter.
+The MongoDB adapter can be chosen to minimize required setup for this project. Converting to Mongo adapters should (mostly) only include adding `_id` `@map`'ing and adding `@db.ObjectId` for `@id`'s (an up-to-date [mongo schema file](./prisma/schema.mongo.prisma) is included for your convenience). Do note, Prisma migrations aren't supported for the MongoDB adapter.
 
-## Configuration
+## 🛠️ Installation
 
-The full configuration for this project can be found [here](./config/config.example.json).
+Please note, a [Discord Application](https://wiki.mirasaki.dev/docs/discord-create-application#go-to-discord-developer-portal) is required for both installation methods.
+
+### 📦 Run as a Docker container (preferred)
+
+The quickest, and easiest, way to host/use this bot template is by deploying it inside of a [Docker](https://www.docker.com/) container. We recommend [Docker Desktop](https://www.docker.com/products/docker-desktop/).
+
+1. Download the [latest release](<https://github.com/rhidium/template/releases`>) or `git clone git@github.com:rhidium/template.git` the repo
+2. Run `pnpm setup:linux` or `pnpm setup:windows` (depending on your OS) in the project root folder
+3. Edit the newly created `.env` and `/config/config.json` files and provide your configuration
+4. Start the application: `docker compose up`
+
+### 🖥️ Run as a plain NodeJS app
+
+- Install the additional pre-requisites:
+  - [Node.js](https://nodejs.org/en/) v16.6.0 or newer
+  - [PostgreSQL](https://www.postgresql.org/) v13 or newer
+- Download the [latest release](<https://github.com/rhidium/template/releases`>) or `git clone git@github.com:rhidium/template.git` the repo
+- Run `pnpm setup:linux` or `pnpm setup:windows` in the project root folder
+- Edit the newly created `/config/config.json` file and provide your configuration
+  - Alternatively, use `pnpm setup:config` if you prefer a web-based editor
+  - Hit `ctrl+c` to stop the application once you've clicked "Save"
+- Edit the newly created `.env` file and provide your environmental values
+- Start the application: `pnpm start`
+
+## ⚙️ Configuration
+
+The full configuration for this project can be found [here](./config/config.example.json), and is validated through a JSON schema file that is automatically kept up-to-date. There's quite a bit of options to explore, which is why we've included a web-based editor to keep things simple.
 
 - `pnpm config-editor` - starts the configuration editor, edit [the script](./scripts/config-editor.mjs) if needed
 - `pnpm update-schema` - generate a new JSON Schema, `config-editor` automatically does this
 - `pnpm generate-schema` - CLI alternative to `update-schema`, included for completeness
 
-The `.env` file is not required, but overwrites by developers in these files are still respected. For example, you can run the production build with sharding and clustering in development mode by setting `NODE_ENV` in `.env`
+> Using the editor is by no means necessary, and only serves to make the large amount of configuration a bit more digestible to new users.
 
-## Installation
+### dotenv
 
-Are you familiar with Docker? If so, you can use the `docker-compose.yml` or `Dockerfile` to get started quickly. Otherwise, follow the steps below.
+The `.env` file holds your secrets and other environmental values. Let's explain the different keys here:
 
-### Pre-requisites
+```bash
+# The node environment your bot is running in
+# Available values: production, development
+NODE_ENV=production
 
-- A [Discord Application](https://wiki.mirasaki.dev/docs/discord-create-application#go-to-discord-developer-portal)
-- [Node.js](https://nodejs.org/en/) v16.6.0 or newer
-- [MongoDB](https://www.mongodb.com/) v4.4 or newer
+# The database URL Prisma uses to connect to your database.
+DATABASE_URL="postgresql://<username>:<password>@<host>/<database>"
 
-### Setup Instructions
+# Docker Compose uses the following environment variables to configure the database connection.
+DATABASE_PASSWORD="<password>"
+```
 
-- Download the [latest release](<https://github.com/rhidium/template/releases`>) or `git clone git@github.com:rhidium/template.git` the repo
-- Run `pnpm setup:linux` or `pnpm setup:windows` in the newly created folder
-- Edit the newly created `/config/config.json` file and provide your configuration
-  - Alternatively, use `pnpm setup:config` if you prefer a web-based editor
-  - Hit `ctrl+c` to stop the application once you've clicked "Save"
-- Start the application: `pnpm start`
+## 🧩 Component Handlers
 
-## Scripts
+Just a quick note on the component/command handler the underlying [@rhidium/core](https://rhidium.xyz/) implements - you don't **have** to use the built-in handlers. You can use the following (vanilla `discord.js`) code to achieve the same, but within an existing component (instead of having to create a new one) - which is useful for small commands/components.
 
-Here's some example scripts to get you started with your favorite runtime:
+> ⚠️ You can use `@` at the start of any `componentId`/`customId` to omit the built-in handlers. Alternatively, you can use the `suppress_unknown_interaction_warnings` configuration option.
+
+In any scope with a valid interaction context:
+
+```ts
+import { ComponentType } = from 'discord.js';
+import { UnitConstants } from '@rhidium/core';
+
+// Fetching the message attached to the received interaction
+const interactionMessage = await interaction.fetchReply();
+
+// Button reply/input collector
+const collector = interactionMessage.createMessageComponentCollector({
+  filter: (i) => (
+    i.customId === '@customId' || i.customId === '@customIdTwo'
+  ) && i.user.id === interaction.user.id,
+  componentType: ComponentType.Button,
+  time: UnitConstants.MS_IN_ONE_HOUR,
+});
+
+// And finally, running code when it collects an interaction (defined as "i" in this callback)
+collector.on('collect', (i) => { /* The callback to run */ });
+```
+
+### Dynamic Components
+
+You can create **dynamic** components by using multiple `@`'s in the `componentId/customId` property. For example, an id of `@close-ticket@12` will make the component handler look for a component with a `customId` of `close-ticket`. This allows for dynamic component ids, allowing you to effectively "store" data or other references in the components `customId`.
+
+### Reserved filenames
+
+Due to the dynamic nature of the project structure/architecture, some (file) names are reserved **when using a directory to organize your command/component**. "Reserved" here means that commands/components won't be loaded from files named either of the following:
+
+`components`, `options`, `types`, `helpers`, `controllers`, `services`, `transformers`, and `enums`.
+
+Check out [the `/embeds` command structure](./src/chat-input/Administrator/embeds) for an example of what this looks like in action.
+
+## ⌨️ Scripts
+
+We've also included some example scripts to get you started with your favorite runtime:
 
 > Please note, you should run these from the **directory root**
 
@@ -123,7 +200,7 @@ pm2 delete
 # Build
 docker build --tag rhidium-template .
 # Start
-docker run -it -p 3000:3000 --env-file ./.env -d --name my-discord-bot rhidium-template
+docker run -it -p 9000:9000 --env-file .env -d --name my-discord-bot rhidium-template
 # Logs
 docker logs my-discord-bot -f
 # Stop
@@ -138,4 +215,10 @@ docker rm -fv my-discord-bot
 docker run -it --rm my-discord-bot sh
 ```
 
-> Forever Free, open-source, and ISC licensed, meaning you're in full control
+## 🙋 Support
+
+Join our [support server](https://discord.gg/mirasaki) if you have any questions, feature requests or other feedback:
+
+[![banner](https://invidget.switchblade.xyz/mirasaki)](https://discord.gg/mirasaki)
+
+> Open-source, and ISC licensed, meaning you're in full control

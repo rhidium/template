@@ -8,8 +8,8 @@ import nlClient from '../../locales/nl/client.json';
 import nlCommands from '../../locales/nl/commands.json';
 import nlGeneral from '../../locales/nl/general.json';
 
-import libEnglish from '../../locales/lib/en.json';
-import libDutch from '../../locales/lib/nl.json';
+import libEnglish from '../../locales/en/lib.json';
+import libDutch from '../../locales/nl/lib.json';
 
 export const defaultNS = 'client';
 

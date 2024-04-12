@@ -43,8 +43,8 @@ const CommandsHelpCommand =  new ChatInputCommand({
     // Overview of Category
     if (isCategoryQuery) {
       const categoryCommands = commands.filter((c) => c.category === name);
-      const embed = await client.commandManager.categoryEmbed(name ?? '', categoryCommands);
-      await CommandsHelpCommand.reply(interaction, embed);
+      const embeds = await client.commandManager.categoryEmbeds(name ?? '', categoryCommands);
+      await CommandsHelpCommand.reply(interaction, { embeds });
       return;
     }
 

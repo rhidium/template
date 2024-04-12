@@ -139,6 +139,12 @@ export interface IPermissions {
    * the bot - like restarting, viewing logs, audits, etc.
    */
   system_administrator_ids: Snowflake[];
+  /**
+   * If a command has a permission level of Administrator, should we
+   * automatically hide that command from non-Administrator users, by using
+   * `#setDefaultMemberPermissions(0)` on the command?
+   */
+  default_lock_member_permissions: boolean;
 }
 
 export interface IClient {
@@ -150,10 +156,15 @@ export interface IClient {
   development_server_id?: Snowflake;
   /**
    * Should we refuse, and reply to, interactions that belong to unknown commands?
-   * You should disable this if you run multiple applications/processes under the
-   * same bot account used for this client
    */
   refuse_unknown_command_interactions?: boolean;
+  /**
+   * Should we suppress warnings about unknown interactions?
+   * You should enable this if you run multiple applications/processes under the
+   * same bot account used for this client, or register a lot of 
+   * command-scoped component listeners/collectors
+   */
+  suppress_unknown_interaction_warnings?: boolean;
   /**
    * The id of the channel where internal errors should be logged to
    */
@@ -223,6 +234,12 @@ export interface IDebug {
 export type InternalAppConfig = {
   /** Which environment are we running in resolved from cli arg .env value */
   NODE_ENV: NodeEnvValues;
+  /**
+   * Should we run in dry-run mode?
+   * This allows to build with an example
+   * JSON file, but not actually run the bot
+   */
+  DRY_RUN: boolean;
 };
 
 export type AppConfig = Omit<FullUserConfigOptions, 'colors'> &

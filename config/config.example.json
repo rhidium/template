@@ -3,8 +3,11 @@
   "client": {
     "id": "835856785512464436",
     "token": "YOUR_BOT_TOKEN",
-    "refuse_unknown_command_interactions": true,
-    "development_server_id": "FOR_DEVELOPERS_ONLY"
+    "refuse_unknown_command_interactions": false,
+    "suppress_unknown_interaction_warnings": false,
+    "development_server_id": "FOR_DEVELOPERS_ONLY",
+    "command_usage_channel_id": "",
+    "error_channel_id": ""
   },
   "permissions": {
     "owner_id": "1148597817498140774",
@@ -13,7 +16,8 @@
     ],
     "system_administrator_ids": [
       "1148597817498140774"
-    ]
+    ],
+    "default_lock_member_permissions": false
   },
   "api": {
     "enabled": true,

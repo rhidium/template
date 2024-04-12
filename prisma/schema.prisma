@@ -3,7 +3,7 @@ generator client {
   // Note: You will need to declare a binary target for the Prisma Client
   // when you deploy to Docker, Vercel, AWS Lambda, Google Cloud Functions, Azure Functions,
   // or similar
-  // binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {

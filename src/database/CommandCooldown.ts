@@ -6,7 +6,7 @@ const cooldownFromDb = async (cooldownId: string) => await prisma.commandCooldow
   where: { cooldownId },
 });
 
-export const cooldownTTLCache = new AsyncTTLCacheManager<CommandCooldown>({
+export const cooldownTTLCache = new AsyncTTLCacheManager<Awaited<ReturnType<typeof cooldownFromDb>>>({
   fetchFunction: cooldownFromDb,
   ttl: UnitConstants.MS_IN_ONE_DAY,
 });

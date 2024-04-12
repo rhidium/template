@@ -112,5 +112,14 @@
     "scripts",
     "test",
     "locales/**/*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "coverage",
+    "scripts",
+    "test",
+    "locales/**/*.json",
+    "generated"
   ]
 }

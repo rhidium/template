@@ -54,9 +54,9 @@ export const persistentCooldownMiddleware: CommandMiddlewareFunction = async ({
     const expiresIn = TimeUtils.msToHumanReadableTime(remaining);
     const relativeOutput = expiresIn === '0 seconds' ? '1 second' : expiresIn;
     InteractionUtils.replyDynamic(client, interaction, {
-      content: Lang.t('general:cmdCooldown', {
+      content: Lang.t('lib:commands.onCooldown', {
         type: CommandCooldownType[cooldown.type],
-        duration: relativeOutput,
+        expiresIn: relativeOutput,
       }),
       ephemeral: true,
     });

@@ -15,7 +15,6 @@
   "cancel": "Cancel",
   "saved": "Saved",
   "cancelled": "Cancelled",
-  "cmdCooldown": "You are on cooldown (type {{type}}) for this command - please wait **{{duration}}** before using this command again",
   "componentNames": {
     "command": "Command",
     "component": "Component",
