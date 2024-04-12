@@ -18,7 +18,7 @@ export type GuildWithEmbeds = Prisma.GuildGetPayload<{
 
 export const guildSettingsFromDb = async (guildId: string): Promise<GuildWithEmbeds> => {
   const guild = await prisma.guild.findUnique({
-    where: { guildId: guildId },
+    where: { id: guildId },
     include: {
       memberJoinEmbed: {
         include: { fields: true },
@@ -31,7 +31,7 @@ export const guildSettingsFromDb = async (guildId: string): Promise<GuildWithEmb
   return (
     guild ??
     (await prisma.guild.create({
-      data: { guildId },
+      data: { id: guildId },
       include: {
         memberJoinEmbed: {
           include: { fields: true },
@@ -62,7 +62,6 @@ export const updateGuildSettings = async (
   const updatedGuild = await prisma.guild.update({
     ...updateArgs,
     where: {
-      guildId: guildSettings.guildId,
       id: guildSettings.id,
     },
     include: {
@@ -74,6 +73,6 @@ export const updateGuildSettings = async (
       },
     },
   });
-  guildTTLCache.set(guildSettings.guildId, updatedGuild);
+  guildTTLCache.set(guildSettings.id, updatedGuild);
   return updatedGuild;
 };

@@ -12,12 +12,12 @@ datasource db {
 }
 
 model User {
-  id      String @id @unique
+  id      String   @id @unique
   members Member[]
 }
 
 model Member {
-  id      String @id @unique
+  id      String @id @unique @default(cuid())
   userId  String
   user    User   @relation(fields: [userId], references: [id])
   guildId String
@@ -25,9 +25,8 @@ model Member {
 }
 
 model Guild {
-  id      String @id @unique
-  guildId String @unique
-  Members   Member[]
+  id      String   @id @unique
+  Members Member[]
 
   adminRoleId       String?
   adminLogChannelId String?
@@ -46,7 +45,7 @@ model Guild {
 }
 
 model CommandCooldown {
-  id         Int     @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   cooldownId String     @unique
   duration   Int
   usages     DateTime[]
@@ -55,7 +54,7 @@ model CommandCooldown {
 // Configurable Messages for users
 // Check out the join/leave feed for an example
 model Embed {
-  id            Int    @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   messageText   String?
   color         Int?
   authorName    String?
@@ -75,7 +74,7 @@ model Embed {
 }
 
 model EmbedField {
-  id      String  @id @unique
+  id      Int     @id @unique @default(autoincrement())
   name    String
   value   String
   inline  Boolean
@@ -84,7 +83,7 @@ model EmbedField {
 }
 
 model CommandStatistics {
-  id String @id @unique
+  id        Int    @id @unique @default(autoincrement())
   type      Int
   commandId String @unique
 

@@ -216,9 +216,9 @@ export const configureEmbedController: EmbedController = async (
     ? resolveColor(`#${configureEmbedData.color.replaceAll('#', '')}`)
     : null;
   const createEmbedData: Prisma.EmbedCreateInput = {
-    memberJoinEmbed: {
+    [settingKey]: {
       connect: {
-        guildId: interaction.guildId,
+        id: guildSettings.id,
       },
     },
     messageText: configureEmbedMessage ?? null,
@@ -241,7 +241,7 @@ export const configureEmbedController: EmbedController = async (
     update: upsertData,
     create: createEmbedData,
     where: {
-      id: upsertId!,
+      id: upsertId,
     },
     include: { fields: true },
   });
