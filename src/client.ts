@@ -4,7 +4,16 @@ import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
 import { GatewayIntentBits } from 'discord.js';
 import path from 'path';
 import Lang from './i18n/i18n';
-import { Client, GlobalMiddlewareOptions, logger, initializeLocalization  } from '@rhidium/core';
+import {
+  Client,
+  GlobalMiddlewareOptions,
+  logger,
+  initializeLocalization,
+} from '@rhidium/core';
+
+import libEnglish from '../locales/lib/en.json';
+import libDutch from '../locales/lib/nl.json';
+
 import { permConfig } from './permissions';
 import { appConfig } from './config';
 import { locales } from './i18n';
@@ -54,8 +63,18 @@ export const main = async () => {
     pkg,
   });
 
-  // Let's initialize the library language localization
-  initializeLocalization(Lang);
+  // Initialize localizations for the library/core
+  // Optional, allows is to modify the default translations
+  initializeLocalization(client.I18N, [
+    {
+      lng: 'en-US',
+      resources: libEnglish,
+    },
+    {
+      lng: 'nl',
+      resources: libDutch,
+    },
+  ]);
 
   // Initialize our cluster if we're using one
   if (appConfig.cluster.enabled) client.cluster = new ClusterClient(client);

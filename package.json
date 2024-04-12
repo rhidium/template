@@ -33,11 +33,12 @@
 		"lint": "eslint 'src/**/*.{ts,tsx,js,jsx}'",
 		"lint:fix": "eslint --fix 'src/**/*.{ts,tsx,js,jsx}'",
 		"commit": "cz",
-		"prepare": "husky install"
+		"prepare": "husky install",
+		"type-check": "tsc --noEmit"
 	},
 	"dependencies": {
 		"@prisma/client": "^5.4.1",
-		"@rhidium/core": "^1.6.0",
+		"@rhidium/core": "^1.6.1",
 		"common-tags": "^1.8.2",
 		"discord-api-types": "^0.37.63",
 		"discord-hybrid-sharding": "^2.1.4",
