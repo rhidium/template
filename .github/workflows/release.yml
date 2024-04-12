@@ -47,13 +47,14 @@ jobs:
       # At the time of writing this, PNpm does not support the --no-save option,
       # and "pnpm dlx semantic-release" will not work with global installs
       - name: Install Semantic Release
-        run: npm install -g semantic-release \
-          @semantic-release/changelog \
-          @semantic-release/commit-analyzer \
-          @semantic-release/git \
-          @semantic-release/github \
-          @semantic-release/npm \
-          @semantic-release/release-notes-generator
+        run: |
+          npm i -D --no-save semantic-release \
+            @semantic-release/changelog \
+            @semantic-release/commit-analyzer \
+            @semantic-release/git \
+            @semantic-release/github \
+            @semantic-release/npm \
+            @semantic-release/release-notes-generator
 
       - name: Release
         run: npx semantic-release
