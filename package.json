@@ -37,7 +37,7 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^5.4.1",
-		"@rhidium/core": "^1.1.6",
+		"@rhidium/core": "^1.6.0",
 		"common-tags": "^1.8.2",
 		"discord-api-types": "^0.37.63",
 		"discord-hybrid-sharding": "^2.1.4",
