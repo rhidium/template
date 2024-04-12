@@ -221,4 +221,4 @@ Join our [support server](https://discord.gg/mirasaki) if you have any questions
 
 [![banner](https://invidget.switchblade.xyz/mirasaki)](https://discord.gg/mirasaki)
 
-> Open-source, and ISC licensed, meaning you're in full control
+> Open-source and ISC licensed, meaning you're in full control.
