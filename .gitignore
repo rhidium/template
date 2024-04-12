@@ -6,8 +6,8 @@ TODO
 /data
 
 # Config
-/config.json
-/config.json.bak
+/config/config.json
+/config/config.json.bak
 
 # Logs
 logs

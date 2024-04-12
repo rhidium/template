@@ -10,4 +10,4 @@ const generatorOptions = {
 const schema = createGenerator(generatorOptions).createSchema(generatorOptions.type);
 const schemaString = JSON.stringify(schema);
 
-writeFileSync('./config.schema.json', schemaString);
+writeFileSync('./config/config.schema.json', schemaString);

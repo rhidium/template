@@ -74,7 +74,7 @@ The MongoDB adapter can chosen to minimize required setup for this project. Conv
 
 ## Configuration
 
-The full configuration for this project can be found [here](./config.example.json).
+The full configuration for this project can be found [here](./config/config.example.json).
 
 - `pnpm config-editor` - starts the configuration editor, edit [the script](./scripts/config-editor.mjs) if needed
 - `pnpm update-schema` - generate a new JSON Schema, `config-editor` automatically does this
@@ -96,7 +96,7 @@ Are you familiar with Docker? If so, you can use the `docker-compose.yml` or `Do
 
 - Download the [latest release](<https://github.com/rhidium/template/releases`>) or `git clone git@github.com:rhidium/template.git` the repo
 - Run `pnpm setup:linux` or `pnpm setup:windows` in the newly created folder
-- Edit the newly created `config.json` file and provide your configuration
+- Edit the newly created `/config/config.json` file and provide your configuration
   - Alternatively, use `pnpm setup:config` if you prefer a web-based editor
   - Hit `ctrl+c` to stop the application once you've clicked "Save"
 - Start the application: `pnpm start`

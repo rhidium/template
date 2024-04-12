@@ -14,11 +14,11 @@ import { readFileSync } from 'fs';
     startJSONEditor,
   } = jsonEditor;
   
-  const jsonSchema = readFileSync('./config.schema.json', { encoding: 'utf-8' });
+  const jsonSchema = readFileSync('./config/config.schema.json', { encoding: 'utf-8' });
   
   startJSONEditor({
     port: 3000,
-    dataFilePath: './config.json',
+    dataFilePath: './config/config.json',
     createBackup: true,
     schemaString: jsonSchema,
   });
