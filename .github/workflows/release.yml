@@ -48,7 +48,7 @@ jobs:
       # and "pnpm dlx semantic-release" will not work with global installs
       - name: Install Semantic Release
         run: |
-          npm i -D --no-save semantic-release \
+          npm i -g --no-save semantic-release \
             @semantic-release/changelog \
             @semantic-release/commit-analyzer \
             @semantic-release/git \
