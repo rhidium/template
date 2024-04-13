@@ -26,7 +26,7 @@ This is a Discord bot template that fully utilizes the [rhidium framework](https
 
 > With Rhidium, you can focus on what's really important: **Creating meaningful features**
 
-Excited to begin? [Get started!](#-installation) or try [the demo](#-support)
+Excited to begin? [Get started](#-installation) or try [the demo](#-support)!
 
 ## 🤩 Features (non-exhaustive)
 
