@@ -7,7 +7,18 @@
     "suppress_unknown_interaction_warnings": false,
     "development_server_id": "FOR_DEVELOPERS_ONLY",
     "command_usage_channel_id": "",
-    "error_channel_id": ""
+    "error_channel_id": "",
+    "presence": {
+      "active": true,
+      "status": "online",
+      "activities": [
+        {
+          "name": "with the API",
+          "type": "PLAYING",
+          "url": ""
+        }
+      ]
+    }
   },
   "permissions": {
     "owner_id": "1148597817498140774",
@@ -70,5 +81,26 @@
     "command_throttling": true,
     "localizations": false,
     "command_data": true
+  },
+  "urls": {
+    "github": "https://github.com/Mirasaki/ts-discord-template",
+    "docs": "https://dts.mirasaki.dev",
+    "website": "https://mirasaki.dev",
+    "support_server": "https://discord.gg/mirasaki  "
+  },
+  "logging": {
+    "max_size": "5m",
+    "max_files": "14d",
+    "zipped_archive": true,
+    "directory": "logs",
+    "date_pattern": "YYYY-MM-DD",
+    "combined_logging": true,
+    "error_logging": true,
+    "warn_logging": true,
+    "info_logging": true,
+    "http_logging": true,
+    "verbose_logging": true,
+    "debug_logging": true,
+    "silly_logging": true
   }
 }
