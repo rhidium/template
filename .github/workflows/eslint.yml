@@ -52,7 +52,5 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Run ESLint
-        run: ESLINT_USE_FLAT_CONFIG=false pnpm dlx eslint .
-          --config .eslintrc.json
-          --ext .js,.jsx,.ts,.tsx
+        run: pnpm run lint
         continue-on-error: false
