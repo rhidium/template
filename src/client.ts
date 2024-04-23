@@ -1,7 +1,7 @@
 import './shared';
 
 import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
-import { GatewayIntentBits } from 'discord.js';
+import { ActivityType, ClientOptions, GatewayIntentBits, PresenceData } from 'discord.js';
 import path from 'path';
 import Lang from './i18n/i18n';
 import {
@@ -10,6 +10,8 @@ import {
   logger,
   initializeLocalization,
   CommandCooldownType,
+  ClientOptions as RhidiumClientOptions,
+  RequiredClientOptions,
 } from '@rhidium/core';
 
 import libEnglish from '../locales/en/lib.json';
@@ -38,10 +40,7 @@ export const main = async () => {
   logger._info(Lang.t('client:initialize.start'));
   const startInitialing = process.hrtime();
 
-  // Initialize our client - scoped because of clustering
-  // It looks like a lot boilerplate, but we only have few
-  // required options and can opt-into a lot of powerful features
-  const client = new Client({
+  const clientOptions: ClientOptions & Partial<RhidiumClientOptions> & RequiredClientOptions<boolean> = {
     globalMiddleware,
     suppressVanity: false,
     // For anyone wondering, there's nothing wrong with storing
@@ -78,7 +77,15 @@ export const main = async () => {
     I18N: Lang,
     locales,
     pkg,
-  });
+  };
+
+  // Conditional client options
+  if (appConfig.client.presence?.active) clientOptions.presence = clientPresence;
+
+  // Initialize our client - scoped because of clustering
+  // It looks like a lot boilerplate, but we only have few
+  // required options and can opt-into a lot of powerful features
+  const client = new Client(clientOptions);
 
   // Initialize localizations for the library/core
   // Optional, allows is to modify the default translations
@@ -166,6 +173,31 @@ export const clientDirectories: Client['extendedOptions']['directories'] = {
 export const clientDebugging: Client['extendedOptions']['debug'] = {
   enabled: appConfig.debug.debug_mode_enabled,
   commandData: appConfig.debug.command_data,
+};
+
+export const clientPresence: PresenceData = {
+  status: appConfig.client.presence?.status ?? 'online',
+  activities: appConfig.client.presence?.activities.map((activity) => {
+    if (!activity.url || activity.type !== 'STREAMING') return {
+      name: activity.name,
+      type: activity.type === 'PLAYING'
+        ? ActivityType.Playing
+        : activity.type === 'WATCHING'
+          ? ActivityType.Watching
+          : activity.type === 'LISTENING'
+            ? ActivityType.Listening
+            : activity.type === 'STREAMING'
+              ? ActivityType.Streaming
+              : activity.type === 'COMPETING'
+                ? ActivityType.Competing
+                : ActivityType.Custom,
+    };
+    else return {
+      name: activity.name,
+      type: ActivityType.Streaming,
+      url: activity.url,
+    };
+  }) ?? [],
 };
 
 // If we're initializing a shard, run main

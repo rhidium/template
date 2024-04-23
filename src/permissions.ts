@@ -1,5 +1,6 @@
 import { ClientPermissionLevel } from '@rhidium/core';
 import { guildSettingsFromCache } from './database';
+import { PermissionFlagsBits } from 'discord.js';
 
 export const permConfig: ClientPermissionLevel[] = [
   {
@@ -31,6 +32,7 @@ export const permConfig: ClientPermissionLevel[] = [
     hasLevel: async (_config, member) => {
       const guildSettings = await guildSettingsFromCache(member.guild.id);
       if (!guildSettings) return false;
+      if (!guildSettings.adminRoleId) return member.permissions.has(PermissionFlagsBits.Administrator);
       return member.roles.cache.some(
         (role) => guildSettings.adminRoleId === role.id,
       );

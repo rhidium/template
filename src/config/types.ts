@@ -1,4 +1,4 @@
-import { Snowflake } from 'discord.js';
+import { PresenceStatusData, Snowflake } from 'discord.js';
 import { CommandCooldownType, IColors, IEmojis, UserColors } from '@rhidium/core';
 
 /**
@@ -173,6 +173,20 @@ export interface IClient {
    * Should we log command/component usage in a Discord channel (id)?
    */
   command_usage_channel_id?: Snowflake;
+  /**
+   * The default client status and activities,
+   * set when the client is ready. This is only
+   * set once on boot, and not updated afterwards.
+   */
+  presence?: {
+    active: boolean;
+    status: PresenceStatusData;
+    activities: {
+      name: string;
+      type: 'PLAYING' | 'WATCHING' | 'LISTENING' | 'STREAMING' | 'COMPETING' | 'CUSTOM';
+      url?: string;
+    }[];
+  }
 }
 
 /**
