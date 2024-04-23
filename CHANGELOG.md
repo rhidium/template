@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/rhidium/template/compare/v2.0.0...v2.1.0) (2024-04-23)
+
+
+### Bug Fixes
+
+* **permissions:** only use admin role permission if role is set/configured ([4383f9f](https://github.com/rhidium/template/commit/4383f9fa0708c778e6b3bb2f8129b831ed7ac19a))
+
+
+### Features
+
+* add client presence to user configuration ([881e983](https://github.com/rhidium/template/commit/881e9830ba0bcf031f0bd93476181ad88b3038ab))
+
 # [2.0.0](https://github.com/rhidium/template/compare/v1.0.0...v2.0.0) (2024-04-13)
 
 
