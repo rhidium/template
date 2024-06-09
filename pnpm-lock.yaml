@@ -12,8 +12,8 @@ importers:
         specifier: ^5.12.1
         version: 5.12.1(prisma@5.12.1)
       '@rhidium/core':
-        specifier: ^2.1.1
-        version: 2.1.1
+        specifier: ^2.1.2
+        version: 2.1.2
       common-tags:
         specifier: ^1.8.2
         version: 1.8.2
@@ -301,8 +301,8 @@ packages:
   '@prisma/get-platform@5.12.1':
     resolution: {integrity: sha512-pgIR+pSvhYHiUcqXVEZS31NrFOTENC9yFUdEAcx7cdQBoZPmHVjtjN4Ss6NzVDMYPrKJJ51U14EhEoeuBlMioQ==}
 
-  '@rhidium/core@2.1.1':
-    resolution: {integrity: sha512-KjPFuN8TZxLS5dYuzDmoiG4KZ8ySCW32yP7QQvAPHxCgVmg1M4Dd0oCpbFXdJheNWTRDmpxOeY0nuCjyrxKCiw==}
+  '@rhidium/core@2.1.2':
+    resolution: {integrity: sha512-1C+ZNzMwpZ/xmABiKdr3oG5wJ16XX/hU0KYgYjPX3m/S3BmvRNjRRl7LGT69sc502cNvb6GETEMPWJifqio/1w==}
 
   '@sapphire/async-queue@1.5.2':
     resolution: {integrity: sha512-7X7FFAA4DngXUl95+hYbUF19bp1LGiffjJtu7ygrZrbdCSsdDDBaSjB7Akw0ZbOu6k0xpXyljnJ6/RZUvLfRdg==}
@@ -2173,7 +2173,7 @@ snapshots:
     dependencies:
       '@prisma/debug': 5.12.1
 
-  '@rhidium/core@2.1.1':
+  '@rhidium/core@2.1.2':
     dependencies:
       '@discordjs/rest': 2.3.0
       '@discordjs/ws': 1.1.1

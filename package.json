@@ -55,7 +55,7 @@
 	"homepage": "https://rhidium.xyz",
 	"dependencies": {
 		"@prisma/client": "^5.12.1",
-		"@rhidium/core": "^2.1.1",
+		"@rhidium/core": "^2.1.2",
 		"common-tags": "^1.8.2",
 		"discord-api-types": "^0.37.87",
 		"discord-hybrid-sharding": "^2.2.0",
