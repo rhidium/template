@@ -17,6 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: List files for debug
+        run: ls -la
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
