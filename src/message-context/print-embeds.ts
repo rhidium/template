@@ -1,4 +1,4 @@
-import { AttachmentBuilder, InteractionReplyOptions, escapeCodeBlock } from 'discord.js';
+import { AttachmentBuilder, EmbedBuilder, InteractionReplyOptions, escapeCodeBlock } from 'discord.js';
 import { EmbedConstants, MessageContextCommand } from '@rhidium/core';
 import Lang from '@/i18n/i18n';
 
@@ -16,7 +16,10 @@ const PrintEmbedCommand = new MessageContextCommand({
 
     const { embeds } = targetMessage;
     const codeblockFormattingLength = 10;
-    const context: InteractionReplyOptions = {
+    const context: Omit<InteractionReplyOptions, 'embeds'> & {
+      files: AttachmentBuilder[];
+      embeds: EmbedBuilder[];
+    } = {
       embeds: [],
       files: [],
     };
@@ -25,13 +28,13 @@ const PrintEmbedCommand = new MessageContextCommand({
       const output = escapeCodeBlock(JSON.stringify(embed, null, 2));
       const outputLength = output.length;
       if (outputLength > EmbedConstants.DESCRIPTION_MAX_LENGTH - codeblockFormattingLength) {
-        context.files!.push(
+        context.files.push(
           new AttachmentBuilder(Buffer.from(output))
             .setName('embed.json')
             .setSpoiler(true)
         );
       }
-      else context.embeds!.push(client.embeds.branding({
+      else context.embeds.push(client.embeds.branding({
         description: `\`\`\`json\n${output}\n\`\`\``,
       }));
     }
