@@ -1,6 +1,6 @@
 {
 	"name": "@rhidium/template",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "A TypeScript Discord bot template that fully utilizes the Rhidium framework.",
 	"main": "dist/src/index.js",
 	"license": "ISC",

@@ -1,3 +1,10 @@
+## [2.1.1](https://github.com/rhidium/template/compare/v2.1.0...v2.1.1) (2024-09-22)
+
+
+### Bug Fixes
+
+* **ci:** update to new teleport cluster ([2428112](https://github.com/rhidium/template/commit/2428112a8b43e7548ff760f89d4c198136f6cac6))
+
 # [2.1.0](https://github.com/rhidium/template/compare/v2.0.0...v2.1.0) (2024-04-23)
 
 
