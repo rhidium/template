@@ -46,18 +46,18 @@ jobs:
       - name: Fetch Teleport binaries
         uses: teleport-actions/setup@v1
         with:
-          version: 14.2.3
+          version: 16.4.0
       - name: Fetch credentials using Machine ID
         id: auth
         uses: teleport-actions/auth@v2
         with:
-          proxy: teleport.mirasaki.dev:443
+          proxy: tp.mirasaki.dev:443
           token: deploy-bot
           certificate-ttl: 1h
           anonymous-telemetry: 1
       - name: Deploy to Production
         run: |
-          tsh ssh mirasaki-development@mirasaki-development << 'ENDSSH'
+          tsh ssh mirasaki-development@eu1.mirasaki.dev << 'ENDSSH'
             cd ~/rhidium/template
             git pull origin main
             docker compose build --no-cache --pull --quiet
