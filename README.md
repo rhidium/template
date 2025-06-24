@@ -18,6 +18,9 @@
     •
     <a href="https://github.com/rhidium/core">Placeholder</a>
   </p>
+
+  [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS     REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium) | [THIS REPOSITORY HAS BEEN MOVED](https://github.com/rhidium/rhidium)
+  
 </div>
 
 # @rhidium/template
